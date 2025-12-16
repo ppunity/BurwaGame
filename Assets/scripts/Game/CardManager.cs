@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class CardManager : MonoBehaviour
 {
@@ -131,14 +132,20 @@ public class CardManager : MonoBehaviour
 
     public void SetGame(string myTag)
     {
+        Vector3 pos1 = Hand_P1.transform.position;
+        Vector3 pos2 = Hand_P2.transform.position;
+
         if(myTag == "Dealer")
-        {
+        {   
+            
             
             isPlayerOneTurn = false;
             Selection.SetActive(false);
         }
         else
         {
+            Hand_P1.transform.position = pos2;
+            Hand_P2.transform.position = pos1;
             isPlayerOneTurn = true;
 
             CreateSelection();            
@@ -317,9 +324,20 @@ private void ExecuteCardDraw(Card cardScript)
             // Note: isPlayerOneTurn is TRUE if P1 just drew the winning card
             string winner = isPlayerOneTurn ? "Player 1" : "Player 2";
 
+            string TextTmp = "";
+
+            if((masterClientTag == "Dealer" && isPlayerOneTurn) || (masterClientTag != "Dealer" && !isPlayerOneTurn))
+            {
+                TextTmp = "You Win!";
+            }
+            else
+            {
+                TextTmp = "You Lose!";
+            }
+
             gameOver = true;
             winText.SetActive(true);
-            winText.GetComponent<TextMeshProUGUI>().text = $"{winner} Wins!";
+            winText.GetComponent<TextMeshProUGUI>().text = TextTmp;
             Pack.SetActive(false);
             
             Debug.Log($"{winner} wins by drawing the Trump Value Card!");
