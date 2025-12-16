@@ -10569,7 +10569,7 @@ MonoBehaviour:
   CurrentValueText: {fileID: 564086987}
   shufflePanel: {fileID: 428963146}
   WaitForShufflePanel: {fileID: 209899473}
-  statusText: {fileID: 0}
+  statusText: {fileID: 1279942648}
   cardSymbols:
   - Hearts
   - Diamonds
