@@ -132,8 +132,8 @@ public class CardManager : MonoBehaviour
 
     public void SetGame(string myTag)
     {
-        Vector3 pos1 = Hand_P1.transform.position;
-        Vector3 pos2 = Hand_P2.transform.position;
+        Vector3 pos1 = Hand_P1.transform.parent.position;
+        Vector3 pos2 = Hand_P2.transform.parent.position;
 
         if(myTag == "Dealer")
         {   
@@ -144,8 +144,8 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-            Hand_P1.transform.position = pos2;
-            Hand_P2.transform.position = pos1;
+            Hand_P1.transform.parent.position = pos2;
+            Hand_P2.transform.parent.position = pos1;
             isPlayerOneTurn = true;
 
             CreateSelection();            
@@ -328,11 +328,11 @@ private void ExecuteCardDraw(Card cardScript)
 
             if((masterClientTag == "Dealer" && isPlayerOneTurn) || (masterClientTag != "Dealer" && !isPlayerOneTurn))
             {
-                TextTmp = "You Win!";
+                TextTmp = $"You Win!{masterClientTag}";
             }
             else
             {
-                TextTmp = "You Lose!";
+                TextTmp =  $"You Loss!{masterClientTag}";
             }
 
             gameOver = true;
