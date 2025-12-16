@@ -126,4 +126,16 @@ public class WorldSpaceGridLayout : MonoBehaviour
         }
     }
     #endif
+
+    public void FlipOrder()
+    {
+        Vector2 FlipCellSize = new Vector2(cellSize.x, -cellSize.y);
+        Vector2 FlipSpacing = new Vector2(spacing.x, -spacing.y);
+        
+        cellSize = FlipCellSize;
+        spacing = FlipSpacing;
+        zSpacing = -zSpacing;
+        ArrangeChildren();
+
+    }
 }

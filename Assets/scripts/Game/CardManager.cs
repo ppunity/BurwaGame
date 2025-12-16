@@ -49,6 +49,8 @@ public class CardManager : MonoBehaviour
 
     private int turnId_;
 
+    private bool dealFromTop = true;
+
     [SerializeField] private GameObject CurrentValuePanel;
     [SerializeField] private TextMeshProUGUI CurrentValueText;
 
@@ -57,6 +59,7 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI statusText;
 
+    [SerializeField] private GameObject OrderSelecrtionPanel;
 
 
 
@@ -180,6 +183,8 @@ public class CardManager : MonoBehaviour
 
         statusText.gameObject.SetActive(false);
 
+        OrderSelecrtionPanel.SetActive(false);
+
         turnId_ = 0;
         gameOver = false;
         isPlayerOneTurn = true;
@@ -225,6 +230,22 @@ public class CardManager : MonoBehaviour
     }
 
 
+    public void SetDealFromTop(bool fromTop)
+    {
+        photonView.RPC("ReceiveSetDealFromTopRPC", RpcTarget.All, fromTop);
+    }
+
+    [PunRPC]
+    void ReceiveSetDealFromTopRPC(bool fromTop)
+    {
+        dealFromTop = fromTop;
+        if(OrderSelecrtionPanel != null && OrderSelecrtionPanel.activeSelf)
+        {
+            OrderSelecrtionPanel.SetActive(false);
+        }
+    }
+
+
     /// <summary>
     /// Executes the action when a Card is clicked.
     /// </summary>
@@ -240,7 +261,8 @@ public class CardManager : MonoBehaviour
         // Check if the clicked card belongs to the 'Selection' context (based on its parent)
         if (cardScript.transform.parent != null && cardScript.transform.parent.gameObject == Selection)
         {
-            Selection.SetActive(false);        
+            Selection.SetActive(false); 
+            OrderSelecrtionPanel.SetActive(true);       
             SendTrumpSelectedRPC(cardScript.CardValue); 
 
         }
@@ -679,6 +701,11 @@ private void ExecuteCardDraw(Card cardScript)
         Hand_P1.transform.parent.gameObject.SetActive(true);
         Hand_P2.transform.parent.gameObject.SetActive(true);
         statusText.gameObject.SetActive(false);
+
+        if(!dealFromTop)
+        {
+            FlipPack();
+        }
     }
 
 
@@ -702,6 +729,12 @@ private void ExecuteCardDraw(Card cardScript)
             shuffledList[randomIndex] = temp;
         }
         return shuffledList;
+    }
+
+
+    public void FlipPack()
+    {
+        Pack.GetComponent<WorldSpaceGridLayout>().FlipOrder();
     }
 
 
