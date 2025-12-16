@@ -12,6 +12,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
+using Unity.VisualScripting;
 
 public class CardManager : MonoBehaviour
 {
@@ -53,6 +54,8 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] private GameObject shufflePanel;
     [SerializeField] private GameObject WaitForShufflePanel;
+
+    [SerializeField] TextMeshProUGUI statusText;
 
 
 
@@ -156,6 +159,7 @@ public class CardManager : MonoBehaviour
 
             shufflePanel.SetActive(true);
             WaitForShufflePanel.SetActive(false);
+            
         }
         else
         {
@@ -167,10 +171,14 @@ public class CardManager : MonoBehaviour
 
             shufflePanel.SetActive(false);
             WaitForShufflePanel.SetActive(true);
+
+            
         }
 
         Hand_P1.transform.parent.gameObject.SetActive(false);
         Hand_P2.transform.parent.gameObject.SetActive(false);
+
+        statusText.gameObject.SetActive(false);
 
         turnId_ = 0;
         gameOver = false;
@@ -208,6 +216,12 @@ public class CardManager : MonoBehaviour
     {
         shufflePanel.SetActive(false);
         WaitForShufflePanel.SetActive(false);
+
+        if(masterClientTag == "Dealer")
+        {
+            statusText.text = "Waiting for Opponent to Select Card";
+            statusText.gameObject.SetActive(true);
+        }
     }
 
 
@@ -664,6 +678,7 @@ private void ExecuteCardDraw(Card cardScript)
         Pack.SetActive(true);
         Hand_P1.transform.parent.gameObject.SetActive(true);
         Hand_P2.transform.parent.gameObject.SetActive(true);
+        statusText.gameObject.SetActive(false);
     }
 
 
