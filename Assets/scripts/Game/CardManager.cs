@@ -48,6 +48,14 @@ public class CardManager : MonoBehaviour
 
     private int turnId_;
 
+    [SerializeField] private GameObject CurrentValuePanel;
+    [SerializeField] private TextMeshProUGUI CurrentValueText;
+
+    [SerializeField] private GameObject shufflePanel;
+    [SerializeField] private GameObject WaitForShufflePanel;
+
+
+
 
     int TurnId
     {
@@ -115,7 +123,7 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
-        masterClientTag = PhotonNetwork.LocalPlayer.CustomProperties["tag"].ToString();
+       masterClientTag = PhotonNetwork.LocalPlayer.CustomProperties["tag"].ToString();
         // Any initialization logic can go here.
        SetGame(masterClientTag);
 
@@ -127,6 +135,8 @@ public class CardManager : MonoBehaviour
         {
             whichPlayer = WhichPlayer.ME;
         }
+
+        CurrentValuePanel.SetActive(false);
 
     }
 
@@ -142,6 +152,10 @@ public class CardManager : MonoBehaviour
             
             isPlayerOneTurn = false;
             Selection.SetActive(false);
+
+
+            shufflePanel.SetActive(true);
+            WaitForShufflePanel.SetActive(false);
         }
         else
         {
@@ -150,6 +164,9 @@ public class CardManager : MonoBehaviour
 
             CreateSelection();            
             Selection.SetActive(true);
+
+            shufflePanel.SetActive(false);
+            WaitForShufflePanel.SetActive(true);
         }
 
         turnId_ = 0;
@@ -165,7 +182,30 @@ public class CardManager : MonoBehaviour
         ClearDiscards();
         
     }
-    
+
+    public void Shuffle()
+    {
+        StartCoroutine(ShuffleCoroutine());
+    }
+
+    IEnumerator ShuffleCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        ShuffleDone();
+    }
+
+
+    public void ShuffleDone()
+    {
+        photonView.RPC("ReceiveShuffleDoneRPC", RpcTarget.All);
+    }
+
+    [PunRPC]    
+    void ReceiveShuffleDoneRPC()
+    {
+        shufflePanel.SetActive(false);
+        WaitForShufflePanel.SetActive(false);
+    }
 
 
     /// <summary>
@@ -412,6 +452,9 @@ private void ExecuteCardDraw(Card cardScript)
         {
             Debug.LogError($"Attempted to set an invalid trump symbol: {value}");
         }
+
+        CurrentValuePanel.SetActive(true);
+        CurrentValueText.text = $"{currentTrumpValue}";
 
         //Pack.SetActive(true);
     }

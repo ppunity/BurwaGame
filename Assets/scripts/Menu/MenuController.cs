@@ -24,6 +24,8 @@ namespace CardGame
 public class MenuController : MonoBehaviour
 {
 
+    public GameObject StartButton;
+
     public static MenuController Instance;
 
 

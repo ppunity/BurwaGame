@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEditor;
 
 namespace CardGame{
     public class PhotonController : MonoBehaviourPunCallbacks {
@@ -41,6 +42,8 @@ namespace CardGame{
 
         public override void OnJoinedLobby(){
             Debug.Log("joined lobby");
+
+            MenuController.Instance.StartButton.SetActive(true);
         }
 
         public override void OnLeftLobby(){
