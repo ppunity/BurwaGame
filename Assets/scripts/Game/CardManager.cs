@@ -250,6 +250,35 @@ public void OnPackCardClicked(Card cardScript)
     }
 }
 
+
+
+// --- New RPC Method for Dealing Cards ---
+
+/// <summary>
+/// RPC method called by the player who drew the card to synchronize the draw 
+/// across all clients.
+/// </summary>
+/// <param name="cardName">The unique name of the card that was drawn (e.g., "King of Hearts").</param>
+[PunRPC]
+public void SynchronizeCardDrawRPC(string cardName)
+{
+    // Find the card object locally using its unique name.
+    Card cardToDraw = Pack.transform.Find(cardName)?.GetComponent<Card>();
+    
+    if (cardToDraw != null)
+    {
+        // Execute the synchronized logic on all clients.
+        ExecuteCardDraw(cardToDraw);
+    }
+    else
+    {
+        Debug.LogError($"SynchronizeCardDrawRPC: Could not find card named '{cardName}' in the Pack.");
+    }
+}
+
+
+
+
 // --- New Synchronized Execution Method ---
 /// <summary>
 /// Contains the core logic for drawing a card, moving it to the hand/discard,
