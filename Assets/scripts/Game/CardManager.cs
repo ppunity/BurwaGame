@@ -199,7 +199,12 @@ public class CardManager : MonoBehaviour
     [PunRPC]
     void ReceiveTrumpSelectedRPC(string value)
     {    
-        SelectTrumpValue(value);        
+        SelectTrumpValue(value);   
+
+        if(masterClientTag == "Dealer")
+        {
+            Pack.SetActive(true);
+        }
 
     }
     
