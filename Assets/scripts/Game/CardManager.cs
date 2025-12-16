@@ -270,7 +270,7 @@ public class CardManager : MonoBehaviour
             OrderSelecrtionPanel.SetActive(true);       
             SendTrumpSelectedRPC(cardScript.CardValue); 
 
-            if(masterClientTag != "Dealer")
+            if(masterClientTag == "Dealer")
             {
                 statusText.text = "Waiting for Opponent Select Order";
                 statusText.gameObject.SetActive(true);
