@@ -133,15 +133,16 @@ public class CardManager : MonoBehaviour
     {
         if(myTag == "Dealer")
         {
+            
+            isPlayerOneTurn = false;
+            Selection.SetActive(false);
+        }
+        else
+        {
             isPlayerOneTurn = true;
 
             CreateSelection();            
             Selection.SetActive(true);
-        }
-        else
-        {
-            isPlayerOneTurn = false;
-            Selection.SetActive(false);
         }
 
         turnId_ = 0;
@@ -166,13 +167,16 @@ public class CardManager : MonoBehaviour
     /// <param name="cardScript">The Card script instance that was clicked.</param>
     public void OnTrumpCardClicked(Card cardScript)
     {
+        if(trumpSelected)
+        {
+            Debug.Log("Trump has already been selected. Cannot select again.");
+            return;
+        }
+
         // Check if the clicked card belongs to the 'Selection' context (based on its parent)
         if (cardScript.transform.parent != null && cardScript.transform.parent.gameObject == Selection)
         {
-            // If it's a selection card, select its symbol as trump
-            SelectTrumpValue(cardScript.CardValue);
-            RemoveOtherSelectionCards(cardScript);
-            cardScript.UpdateCardVisual();        
+            Selection.SetActive(false);        
             SendTrumpSelectedRPC(cardScript.CardValue); 
 
         }
@@ -188,19 +192,16 @@ public class CardManager : MonoBehaviour
 
     void SendTrumpSelectedRPC(string value)
     {
-        photonView.RPC("ReceiveTrumpSelectedRPC", RpcTarget.Others, value);
+        photonView.RPC("ReceiveTrumpSelectedRPC", RpcTarget.All, value);
     }
 
+
+    [PunRPC]
     void ReceiveTrumpSelectedRPC(string value)
-    {
-        Selection.SetActive(true);        
-        SelectTrumpValue(value);
-        RemoveOtherSelectionCards(null); // Remove all selection cards
-        CreateFullPack();
+    {    
+        SelectTrumpValue(value);        
 
     }
-
-
     
 
 // --- Updated OnPackCardClicked ---
@@ -378,7 +379,6 @@ private void ExecuteCardDraw(Card cardScript)
             currentTrumpValue = value;
             Debug.Log($"Trump Value Selected: {currentTrumpValue}");
             trumpSelected = true;
-            Pack.SetActive(true);
         }
         else
         {
