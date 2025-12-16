@@ -483,18 +483,7 @@ private void ExecuteCardDraw(Card cardScript)
     [ContextMenu("Create Full Pack (Shuffled)")]
     public void CreateFullPack()
     {
-        if (Pack == null || cardPrefab == null)
-        {
-            Debug.LogError("Pack GameObject or Card Prefab not assigned in CardManager.");
-            return;
-        }
-        
-        // 1. Clear any existing children from the Pack object
-        foreach (Transform child in Pack.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
+       
         // 2. Generate the unshuffled list of all card combinations
         List<CardData> unshuffledDeck = new List<CardData>();
         foreach (string symbol in cardSymbols)
@@ -514,17 +503,13 @@ private void ExecuteCardDraw(Card cardScript)
         string[] values = shuffledDeck.Select(cd => cd.Value).ToArray();
 
         // 4. Instantiate cards from the shuffled list locally
-        InstantiatePackFromData(shuffledDeck);
+        //InstantiatePackFromData(shuffledDeck);
         
-        Debug.Log($"Created a full deck of {shuffledDeck.Count} cards in a **randomized** order in the '{Pack.name}' object.");
+        //Debug.Log($"Created a full deck of {shuffledDeck.Count} cards in a **randomized** order in the '{Pack.name}' object.");
 
         // 5. Send the shuffled deck data to the other player
-        if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
-        {
-            // Note: Sending two separate string arrays is generally safer/easier than trying to serialize a custom List<struct>
-            photonView.RPC("ReceiveShuffledPackRPC", RpcTarget.Others, symbols, values);
-            Debug.Log("Sent shuffled deck data to opponent via RPC.");
-        }
+        photonView.RPC("ReceiveShuffledPackRPC", RpcTarget.All, symbols, values);
+        Debug.Log("Sent shuffled deck data to opponent via RPC.");
     }
 
     /// <summary>
@@ -563,7 +548,13 @@ private void ExecuteCardDraw(Card cardScript)
     /// <param name="deckData">The ordered list of cards to instantiate.</param>
     private void InstantiatePackFromData(List<CardData> deckData)
     {
-        // Clear any existing children from the Pack object first
+         if (Pack == null || cardPrefab == null)
+        {
+            Debug.LogError("Pack GameObject or Card Prefab not assigned in CardManager.");
+            return;
+        }
+        
+        // 1. Clear any existing children from the Pack object
         foreach (Transform child in Pack.transform)
         {
             Destroy(child.gameObject);
@@ -579,6 +570,8 @@ private void ExecuteCardDraw(Card cardScript)
                 type: Card.CardType.Pack
             );
         }
+
+        Pack.SetActive(true);
     }
 
 
