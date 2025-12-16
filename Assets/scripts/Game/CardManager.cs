@@ -243,6 +243,11 @@ public class CardManager : MonoBehaviour
         {
             OrderSelecrtionPanel.SetActive(false);
         }
+
+         if(masterClientTag == "Dealer")
+        {
+            CreateFullPack();
+        }
     }
 
 
@@ -265,6 +270,12 @@ public class CardManager : MonoBehaviour
             OrderSelecrtionPanel.SetActive(true);       
             SendTrumpSelectedRPC(cardScript.CardValue); 
 
+            if(masterClientTag != "Dealer")
+            {
+                statusText.text = "Waiting for Opponent Select Order";
+                statusText.gameObject.SetActive(true);
+            }
+
         }
         else
         {
@@ -285,13 +296,7 @@ public class CardManager : MonoBehaviour
     [PunRPC]
     void ReceiveTrumpSelectedRPC(string value)
     {    
-        SelectTrumpValue(value);   
-
-        if(masterClientTag == "Dealer")
-        {
-            CreateFullPack();
-        }
-
+        SelectTrumpValue(value);      
     }
     
 
