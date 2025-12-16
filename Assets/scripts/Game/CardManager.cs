@@ -169,6 +169,9 @@ public class CardManager : MonoBehaviour
             WaitForShufflePanel.SetActive(true);
         }
 
+        Hand_P1.transform.parent.gameObject.SetActive(false);
+        Hand_P2.transform.parent.gameObject.SetActive(false);
+
         turnId_ = 0;
         gameOver = false;
         isPlayerOneTurn = true;
@@ -368,11 +371,11 @@ private void ExecuteCardDraw(Card cardScript)
 
             if((masterClientTag == "Dealer" && isPlayerOneTurn) || (masterClientTag != "Dealer" && !isPlayerOneTurn))
             {
-                TextTmp = $"You Win!{masterClientTag}";
+                TextTmp = "You Win!";
             }
             else
             {
-                TextTmp =  $"You Loss!{masterClientTag}";
+                TextTmp = "You Loss!";
             }
 
             gameOver = true;
@@ -659,6 +662,8 @@ private void ExecuteCardDraw(Card cardScript)
         }
 
         Pack.SetActive(true);
+        Hand_P1.transform.parent.gameObject.SetActive(true);
+        Hand_P2.transform.parent.gameObject.SetActive(true);
     }
 
 
