@@ -453,8 +453,7 @@ private void ExecuteCardDraw(Card cardScript)
             Debug.LogError($"Attempted to set an invalid trump symbol: {value}");
         }
 
-        CurrentValuePanel.SetActive(true);
-        CurrentValueText.text = $"{currentTrumpValue}";
+       
 
         //Pack.SetActive(true);
     }
@@ -469,6 +468,9 @@ private void ExecuteCardDraw(Card cardScript)
             currentTrumpValue = value;
             Debug.Log($"Trump Value Selected: {currentTrumpValue}");
             trumpSelected = true;
+
+            CurrentValuePanel.SetActive(true);
+            CurrentValueText.text = $"{currentTrumpValue}";
         }
         else
         {
