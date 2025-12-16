@@ -243,11 +243,6 @@ public void OnPackCardClicked(Card cardScript)
         // Send the card's unique name to all clients (including the local client via RpcTarget.All)
         photonView.RPC("SynchronizeCardDrawRPC", RpcTarget.All, cardScript.name);
     }
-    else
-    {
-        // Fallback for single-player testing (no RPC needed)
-        ExecuteCardDraw(cardScript);
-    }
 }
 
 
