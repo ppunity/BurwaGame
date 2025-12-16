@@ -203,7 +203,7 @@ public class CardManager : MonoBehaviour
 
         if(masterClientTag == "Dealer")
         {
-            Pack.SetActive(true);
+            CreateFullPack();
         }
 
     }
