@@ -137,15 +137,15 @@ public class CardManager : MonoBehaviour
 
         if(myTag == "Dealer")
         {   
-            
+            Hand_P1.transform.parent.position = pos2;
+            Hand_P2.transform.parent.position = pos1;            
             
             isPlayerOneTurn = false;
             Selection.SetActive(false);
         }
         else
         {
-            Hand_P1.transform.parent.position = pos2;
-            Hand_P2.transform.parent.position = pos1;
+            
             isPlayerOneTurn = true;
 
             CreateSelection();            
