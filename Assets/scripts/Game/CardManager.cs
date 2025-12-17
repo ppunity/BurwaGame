@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.Android;
 
 public class CardManager : MonoBehaviour
 {
@@ -23,15 +24,12 @@ public class CardManager : MonoBehaviour
 
     private PhotonView photonView;
 
+    public string RoomName;
+
     public string masterClientTag;
 
     public enum GameState { READY, WAIT, SWITCH_MASTER, WIN, LOSE };
     public GameState gameState;
-
-    public enum WhichPlayer { ME, OTHER };
-
-    public WhichPlayer whichPlayer;
-
 
     public Card cardPrefab;
 
@@ -58,10 +56,9 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject WaitForShufflePanel;
 
     [SerializeField] TextMeshProUGUI statusText;
+    [SerializeField] TextMeshProUGUI PriceText;
 
     [SerializeField] private GameObject OrderSelecrtionPanel;
-
-
 
     int TurnId
     {
@@ -129,21 +126,33 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
-       masterClientTag = PhotonNetwork.LocalPlayer.CustomProperties["tag"].ToString();
+        masterClientTag = PhotonNetwork.LocalPlayer.CustomProperties["tag"].ToString();
         // Any initialization logic can go here.
-       SetGame(masterClientTag);
+        SetGame(masterClientTag);
 
-       if(!PhotonNetwork.IsMasterClient)
+        RoomName = PhotonController.Instance.whichRoom;
+
+        if(RoomName == "galle")
         {
-            whichPlayer = WhichPlayer.OTHER;
+            PriceText.text = "200";
         }
-        else
+        else if(RoomName == "kandy")
         {
-            whichPlayer = WhichPlayer.ME;
+            PriceText.text = "400";
         }
-
-        CurrentValuePanel.SetActive(false);
-
+        else if(RoomName == "colombo")
+        {
+            PriceText.text = "500";
+        }
+        else if(RoomName == "jaffna")
+        {
+            PriceText.text = "1000";
+        }
+        else if(RoomName == "sigiri")
+        {
+            PriceText.text = "5000";
+        }
+        
     }
 
     public void SetGame(string myTag)
@@ -177,6 +186,8 @@ public class CardManager : MonoBehaviour
 
             
         }
+
+        CurrentValuePanel.SetActive(false);
 
         Hand_P1.transform.parent.gameObject.SetActive(false);
         Hand_P2.transform.parent.gameObject.SetActive(false);
@@ -304,20 +315,6 @@ public class CardManager : MonoBehaviour
 // --- Updated OnPackCardClicked ---
 public void OnPackCardClicked(Card cardScript)
 {
-    // 1. Authority Check: Ensure the current player is the one whose turn it is.
-    // Assuming 'WhichPlayer.ME' is P1 when isPlayerOneTurn is true, and P2 when false.
-    bool isMyTurn = (isPlayerOneTurn && whichPlayer == WhichPlayer.ME) || (!isPlayerOneTurn && whichPlayer == WhichPlayer.OTHER);
-    
-    // Further complex check needed here if you have more than 2 players, 
-    // but for 2 players, this simple flip logic works if 'ME' is always P1.
-    // For simplicity, let's assume the player who is CURRENTLY allowed to click
-    // is the one whose local turn it is.
-    if (isPlayerOneTurn && masterClientTag != "Dealer") // Example logic for turn control
-    {
-        // This is where you would put the specific turn-check logic for your game.
-        // If it's not the local player's turn to draw, exit.
-        // return; 
-    }
     
     // Safety check for game state
     if (gameOver || !trumpSelected)
@@ -406,26 +403,25 @@ private void ExecuteCardDraw(Card cardScript)
         // 2. Check for the Win condition *before* toggling the turn
         if(cardScript.CardValue == currentTrumpValue)
         {
-            // Note: isPlayerOneTurn is TRUE if P1 just drew the winning card
-            string winner = isPlayerOneTurn ? "Player 1" : "Player 2";
-
-            string TextTmp = "";
+           
 
             if((masterClientTag == "Dealer" && isPlayerOneTurn) || (masterClientTag != "Dealer" && !isPlayerOneTurn))
             {
-                TextTmp = "You Win!";
+                
+                gameState = GameState.WIN;
             }
             else
             {
-                TextTmp = "You Loss!";
+                
+                gameState = GameState.LOSE;
             }
 
-            gameOver = true;
-            winText.SetActive(true);
-            winText.GetComponent<TextMeshProUGUI>().text = TextTmp;
+            GameOver();
+
+            
             Pack.SetActive(false);
             
-            Debug.Log($"{winner} wins by drawing the Trump Value Card!");
+            
         }
 
         // 3. Toggle the turn flag for the next card (happens on ALL clients)
@@ -786,7 +782,15 @@ private void ExecuteCardDraw(Card cardScript)
 
     public void GameOver()
     {
-        Debug.Log("Game Over!");
+        winText.SetActive(true);
+        if (gameState == GameState.WIN)
+        {
+            winText.GetComponent<TextMeshProUGUI>().text = "You Win!";
+        }
+        else if (gameState == GameState.LOSE)
+        {
+            winText.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+        }
     }
 
     public void CheckTurn()

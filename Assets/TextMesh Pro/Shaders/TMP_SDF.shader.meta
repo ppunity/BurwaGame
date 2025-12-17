@@ -7,3 +7,10 @@ ShaderImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 282386
+  packageName: Carrom - Multiplayer
+  packageVersion: 1.2
+  assetPath: Assets/Carrom/Frameworks/TextMesh Pro/Shaders/TMP_SDF.shader
+  uploadId: 738807

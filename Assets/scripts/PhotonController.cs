@@ -54,10 +54,11 @@ namespace CardGame{
             //MenuController.Instance.vsMsgText.text = "Searching room...";
 
             ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
-                { "roomType", whichRoom }
+                { "roomType", whichRoom },
+                { "gameName", "BurwaCardGame" }
             };
 
-            PhotonNetwork.JoinRandomRoom(roomHastable, 0);
+            PhotonNetwork.JoinRandomRoom(roomHastable, 2);
         }
 
         public void CreatePracticeRoom(){
@@ -70,12 +71,13 @@ namespace CardGame{
 
         public override void OnJoinRandomFailed(short returnCode, string message) {
             ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
-                { "roomType", whichRoom }
+                { "roomType", whichRoom },
+                { "gameName", "BurwaCardGame" }
             };
 
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.CustomRoomProperties = roomHastable;
-            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" };
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" , "gameName" };
             roomOptions.IsOpen = true;
             roomOptions.IsVisible = true;
             PhotonNetwork.CreateRoom(null, roomOptions);
@@ -84,8 +86,6 @@ namespace CardGame{
         public override void OnJoinedRoom()
         {
            ExitGames.Client.Photon.Hashtable userHastable = new ExitGames.Client.Photon.Hashtable();
-                userHastable.Add("avatar", PlayerPrefs.GetInt("avatar"));
-
                 if (PhotonNetwork.PlayerList.Length == 1)
                 {
                     userHastable.Add("tag", "NoneDealer");
@@ -128,17 +128,8 @@ namespace CardGame{
             }
         }
 
-        public override void OnMasterClientSwitched(Player newMasterClient){
-            CardManager.Instance.masterClientTag = (string)newMasterClient.CustomProperties["tag"];
-            if (CardManager.Instance.whichPlayer == CardManager.WhichPlayer.ME){
-                CardManager.Instance.whichPlayer = CardManager.WhichPlayer.OTHER;
-            } else{
-                CardManager.Instance.whichPlayer = CardManager.WhichPlayer.ME;
-            }
-            CardManager.Instance.CheckTurn();
-        }
-
         public override void OnDisconnected(DisconnectCause cause) {
+            PhotonNetwork.LeaveRoom();
             
         }
 

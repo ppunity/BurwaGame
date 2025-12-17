@@ -7,3 +7,10 @@ ShaderImporter:
   userData: Version 2.0
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 282386
+  packageName: Carrom - Multiplayer
+  packageVersion: 1.2
+  assetPath: Assets/Carrom/Frameworks/TextMesh Pro/Shaders/TMPro.cginc
+  uploadId: 738807
