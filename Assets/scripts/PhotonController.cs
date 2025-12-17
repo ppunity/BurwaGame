@@ -53,10 +53,9 @@ namespace CardGame{
         public void FindRoom() {
             //MenuController.Instance.vsMsgText.text = "Searching room...";
 
-            ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable ();
-            roomHastable.Add("roomType", whichRoom);
-            roomHastable.Add("gameName", "BurwaCardGame");
-            
+            ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
+                { "roomType", whichRoom }
+            };
 
             PhotonNetwork.JoinRandomRoom(roomHastable, 2);
         }
@@ -70,13 +69,13 @@ namespace CardGame{
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message) {
-            ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable ();
-            roomHastable.Add("roomType", whichRoom);
-            roomHastable.Add("gameName", "BurwaCardGame");
+            ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
+                { "roomType", whichRoom }
+            };
 
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.CustomRoomProperties = roomHastable;
-            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" , "gameName" };
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" };
             roomOptions.IsOpen = true;
             roomOptions.IsVisible = true;
             PhotonNetwork.CreateRoom(null, roomOptions);
