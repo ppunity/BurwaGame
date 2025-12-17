@@ -57,7 +57,7 @@ namespace CardGame{
                 { "roomType", whichRoom }
             };
 
-            PhotonNetwork.JoinRandomRoom(roomHastable, 2);
+            PhotonNetwork.JoinRandomRoom(roomHastable, 0);
         }
 
         public void CreatePracticeRoom(){
@@ -127,7 +127,7 @@ namespace CardGame{
         }
 
         public override void OnDisconnected(DisconnectCause cause) {
-            PhotonNetwork.LeaveRoom();
+            //PhotonNetwork.LeaveRoom();
             
         }
 
