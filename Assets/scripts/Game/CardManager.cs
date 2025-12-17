@@ -39,6 +39,8 @@ public class CardManager : MonoBehaviour
     public GameObject Hand_P1;
     public GameObject Hand_P2;
 
+    public GameObject[] MyObjects;
+
 
     public GameObject winText;
 
@@ -191,6 +193,10 @@ public class CardManager : MonoBehaviour
 
         Hand_P1.transform.parent.gameObject.SetActive(false);
         Hand_P2.transform.parent.gameObject.SetActive(false);
+        foreach (GameObject obj in MyObjects)
+        {
+            obj.SetActive(false);
+        }
 
         statusText.gameObject.SetActive(false);
 
@@ -702,6 +708,10 @@ private void ExecuteCardDraw(Card cardScript)
         Pack.SetActive(true);
         Hand_P1.transform.parent.gameObject.SetActive(true);
         Hand_P2.transform.parent.gameObject.SetActive(true);
+        foreach (GameObject obj in MyObjects)
+        {
+            obj.SetActive(true);
+        }
         statusText.gameObject.SetActive(false);
 
         if(!dealFromTop)
