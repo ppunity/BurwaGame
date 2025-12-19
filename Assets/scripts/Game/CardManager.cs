@@ -14,6 +14,7 @@ using UnityEngine.UI;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem.Android;
+using Photon.Realtime;
 
 public class CardManager : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class CardManager : MonoBehaviour
 
     public string masterClientTag;
 
-    public enum GameState { READY, WAIT, SWITCH_MASTER, WIN, LOSE };
+    public enum GameState { READY, WAIT, SWITCH_MASTER, WIN, LOSE, PLAYING };
     public GameState gameState;
 
     public Card cardPrefab;
@@ -184,6 +185,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = MyAnimator;
             NoneDealerAnimator = OpponentAnimator;
+            DealerAnimator.SetBool("isDealer", true);
             
         }
         else
@@ -199,6 +201,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = OpponentAnimator;
             NoneDealerAnimator = MyAnimator;
+            DealerAnimator.SetBool("isDealer", true);
 
             
         }
@@ -409,7 +412,7 @@ private void ExecuteCardDraw(Card cardScript)
         {
             targetHand = Hand_P1;
             newType = Card.CardType.Hand_P1;
-            NoneDealerAnimator.SetTrigger("me");
+            DealerAnimator.SetTrigger("me");
         }
         else
         {
@@ -422,6 +425,7 @@ private void ExecuteCardDraw(Card cardScript)
         MoveCardWithDelay(cardScript, targetHand.transform, newType, 0.3f);
         
         Debug.Log($"{cardScript.name} dealt to {(isPlayerOneTurn ? "Player 1" : "Player 2")}'s Hand.");
+        gameState = GameState.PLAYING;
 
         // 2. Check for the Win condition *before* toggling the turn
         if(cardScript.CardValue == currentTrumpValue)
@@ -439,13 +443,15 @@ private void ExecuteCardDraw(Card cardScript)
                 gameState = GameState.LOSE;
             }
 
-            GameOver();
+            
 
             
             Pack.SetActive(false);
             
             
         }
+
+        
 
         // 3. Toggle the turn flag for the next card (happens on ALL clients)
         isPlayerOneTurn = !isPlayerOneTurn;
@@ -493,6 +499,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
     yield return new WaitForSeconds(delay);
 
     card.gameObject.SetActive(true); // Activate the card after the delay
+    GameOver();
 
     isDealing = false;
 
