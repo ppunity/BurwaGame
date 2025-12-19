@@ -454,7 +454,7 @@ private void ExecuteCardDraw(Card cardScript)
             
 
             
-            Pack.SetActive(false);
+            //Pack.SetActive(false);
             
             
         }
@@ -845,8 +845,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     public void GameOver()
     {
-        DealerAnimator.SetBool("Deal", false);
-        NoneDealerAnimator.SetBool("Deal", false);
+        
         winText.SetActive(true);
         if (gameState == GameState.WIN)
         {
