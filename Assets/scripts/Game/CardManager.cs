@@ -499,7 +499,10 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
     yield return new WaitForSeconds(delay);
 
     card.gameObject.SetActive(true); // Activate the card after the delay
-    GameOver();
+    if(gameState == GameState.WIN || gameState == GameState.LOSE)
+        {
+        GameOver();
+        }
 
     isDealing = false;
 
