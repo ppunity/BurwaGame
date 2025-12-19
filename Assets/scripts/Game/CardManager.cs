@@ -47,6 +47,8 @@ public class CardManager : MonoBehaviour
     public bool trumpSelected = false;
     public bool gameOver = false;
 
+    public bool isDealing = false;
+
     private int turnId_;
 
     private bool dealFromTop = true;
@@ -61,6 +63,12 @@ public class CardManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI PriceText;
 
     [SerializeField] private GameObject OrderSelecrtionPanel;
+
+    [SerializeField] private Animator MyAnimator;
+    [SerializeField] private Animator OpponentAnimator;
+
+    private Animator DealerAnimator;
+    private Animator NoneDealerAnimator;
 
     int TurnId
     {
@@ -173,6 +181,9 @@ public class CardManager : MonoBehaviour
 
             shufflePanel.SetActive(true);
             WaitForShufflePanel.SetActive(false);
+
+            DealerAnimator = MyAnimator;
+            NoneDealerAnimator = OpponentAnimator;
             
         }
         else
@@ -185,6 +196,9 @@ public class CardManager : MonoBehaviour
 
             shufflePanel.SetActive(false);
             WaitForShufflePanel.SetActive(true);
+
+            DealerAnimator = OpponentAnimator;
+            NoneDealerAnimator = MyAnimator;
 
             
         }
@@ -323,7 +337,7 @@ public void OnPackCardClicked(Card cardScript)
 {
     
     // Safety check for game state
-    if (gameOver || !trumpSelected)
+    if (gameOver || !trumpSelected || isDealing)
     {
         Debug.Log("Game is over or trump not selected. No more cards can be dealt.");
         return;
@@ -380,8 +394,9 @@ private void ExecuteCardDraw(Card cardScript)
     // Logic for Discarding the first two cards (turnId_ = 0 and 1)
     if (turnId_ < 2)
     {
-        MoveCard(cardScript, DisCards.transform, Card.CardType.Discard);
+        MoveCardWithDelay(cardScript, DisCards.transform, Card.CardType.Discard, 0.5f);
         Debug.Log($"Card {cardScript.name} moved to Discard (Turn {turnId_}).");
+        DealerAnimator.SetTrigger("right");
     }
     // Logic for Dealing to Hands (turnId_ >= 2)
     else 
@@ -394,15 +409,17 @@ private void ExecuteCardDraw(Card cardScript)
         {
             targetHand = Hand_P1;
             newType = Card.CardType.Hand_P1;
+            NoneDealerAnimator.SetTrigger("me");
         }
         else
         {
             targetHand = Hand_P2;
             newType = Card.CardType.Hand_P2;
+            DealerAnimator.SetTrigger("you");
         }
 
         // 1. Move the card to the target hand
-        MoveCard(cardScript, targetHand.transform, newType);
+        MoveCardWithDelay(cardScript, targetHand.transform, newType, 0.3f);
         
         Debug.Log($"{cardScript.name} dealt to {(isPlayerOneTurn ? "Player 1" : "Player 2")}'s Hand.");
 
@@ -447,23 +464,40 @@ private void ExecuteCardDraw(Card cardScript)
 
 
 
-    /// <summary>
-    /// Helper function to handle the physical movement and attribute update of a card.
-    /// </summary>
-    /// <param name="card">The card to move.</param>
-    /// <param name="newParent">The new parent transform (e.g., Hand_P1).</param>
-    /// <param name="newType">The new CardType (e.g., Hand_P1).</param>
-    public void MoveCard(Card card, Transform newParent, Card.CardType newType)
+   /// <summary>
+/// Starts the delayed movement process.
+/// </summary>
+public void MoveCardWithDelay(Card card, Transform newParent, Card.CardType newType, float delay)
+{
+    StartCoroutine(MoveCardCoroutine(card, newParent, newType, delay));
+}
+
+private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardType newType, float delay)
+{
+    isDealing = true;
+    // Perform the actual movement
+    if (card != null) // Safety check in case card was destroyed during delay
     {
-        // 1. Change the card's parent/location
         card.transform.SetParent(newParent);
-
-        // 2. Update the card's type
         card.cardtype = newType;
+        
+        // Update visuals immediately after parent change
+        card.UpdateCardVisual();
 
-        // Note: If you use the WorldSpaceGridLayout, moving the card to a new parent
-        // will automatically trigger the layout script on that new parent to reposition the card!
+        card.gameObject.SetActive(false); // Ensure the card is active after moving
+        
+        Debug.Log($"Delayed Move Complete: {card.name} moved to {newParent.name}");
     }
+
+     // Wait for the specified time
+    yield return new WaitForSeconds(delay);
+
+    card.gameObject.SetActive(true); // Activate the card after the delay
+
+    isDealing = false;
+
+
+}
 
     public void RemoveOtherSelectionCards(Card cardToKeep)
     {
