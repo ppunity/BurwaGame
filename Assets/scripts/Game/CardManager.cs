@@ -185,7 +185,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = MyAnimator;
             NoneDealerAnimator = OpponentAnimator;
-            DealerAnimator.SetBool("Deal", true);
+            
             
         }
         else
@@ -201,7 +201,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = OpponentAnimator;
             NoneDealerAnimator = MyAnimator;
-            DealerAnimator.SetBool("Deal", true);
+            
 
             
         }
@@ -399,7 +399,15 @@ private void ExecuteCardDraw(Card cardScript)
     {
         MoveCardWithDelay(cardScript, DisCards.transform, Card.CardType.Discard, 0.5f);
         Debug.Log($"Card {cardScript.name} moved to Discard (Turn {turnId_}).");
-        DealerAnimator.SetTrigger("right");
+        if(masterClientTag == "Dealer")
+            {
+                DealerAnimator.SetTrigger("left");
+            }
+        else
+            {
+                DealerAnimator.SetTrigger("right");
+            }
+        
     }
     // Logic for Dealing to Hands (turnId_ >= 2)
     else 
@@ -750,6 +758,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         }
 
         Pack.SetActive(true);
+        DealerAnimator.SetBool("Deal", true);
         Hand_P1.transform.parent.gameObject.SetActive(true);
         Hand_P2.transform.parent.gameObject.SetActive(true);
         foreach (GameObject obj in MyObjects)
