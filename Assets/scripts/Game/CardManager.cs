@@ -185,7 +185,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = MyAnimator;
             NoneDealerAnimator = OpponentAnimator;
-            DealerAnimator.SetBool("isDealer", true);
+            DealerAnimator.SetBool("Deal", true);
             
         }
         else
@@ -201,7 +201,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = OpponentAnimator;
             NoneDealerAnimator = MyAnimator;
-            DealerAnimator.SetBool("isDealer", true);
+            DealerAnimator.SetBool("Deal", true);
 
             
         }
