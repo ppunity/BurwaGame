@@ -397,7 +397,7 @@ private void ExecuteCardDraw(Card cardScript)
     // Logic for Discarding the first two cards (turnId_ = 0 and 1)
     if (turnId_ < 2)
     {
-        MoveCardWithDelay(cardScript, DisCards.transform, Card.CardType.Discard, 1f);
+        MoveCardWithDelay(cardScript, DisCards.transform, Card.CardType.Discard, 0.5f);
         Debug.Log($"Card {cardScript.name} moved to Discard (Turn {turnId_}).");
         if(masterClientTag == "Dealer")
             {
@@ -430,7 +430,7 @@ private void ExecuteCardDraw(Card cardScript)
         }
 
         // 1. Move the card to the target hand
-        MoveCardWithDelay(cardScript, targetHand.transform, newType, 1f);
+        MoveCardWithDelay(cardScript, targetHand.transform, newType, 0.5f);
         
         Debug.Log($"{cardScript.name} dealt to {(isPlayerOneTurn ? "Player 1" : "Player 2")}'s Hand.");
         gameState = GameState.PLAYING;
