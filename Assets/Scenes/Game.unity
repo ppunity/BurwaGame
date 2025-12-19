@@ -2198,6 +2198,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e7551aa89a7296e488dc923402451e26, type: 2}
+    - target: {fileID: 203394427185448172, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 37a3e8dfdf6d898499ffd8eed162779f, type: 2}
     - target: {fileID: 919132149155446097, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
       propertyPath: m_Name
       value: OpponentHand
@@ -2210,6 +2214,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1243900774}
   m_SourcePrefab: {fileID: 100100000, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
+--- !u!1 &232657359 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -9158515662321135228, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
+  m_PrefabInstance: {fileID: 232657358}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &238862624
 GameObject:
   m_ObjectHideFlags: 0
@@ -4211,6 +4220,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e7551aa89a7296e488dc923402451e26, type: 2}
+    - target: {fileID: 203394427185448172, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 37a3e8dfdf6d898499ffd8eed162779f, type: 2}
     - target: {fileID: 919132149155446097, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
       propertyPath: m_Name
       value: MyHand
@@ -4223,6 +4236,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 450642446}
   m_SourcePrefab: {fileID: 100100000, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
+--- !u!1 &433965263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -9158515662321135228, guid: ad3888b7f76e31e46a6a166b170e0de0, type: 3}
+  m_PrefabInstance: {fileID: 433965262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &438477066
 GameObject:
   m_ObjectHideFlags: 0
@@ -11767,6 +11785,8 @@ MonoBehaviour:
   OrderSelecrtionPanel: {fileID: 1227596075}
   MyAnimator: {fileID: 450642446}
   OpponentAnimator: {fileID: 1243900774}
+  MyAnimationCard: {fileID: 433965263}
+  OpponentAnimationCard: {fileID: 232657359}
   cardSymbols:
   - Hearts
   - Diamonds

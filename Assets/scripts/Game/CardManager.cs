@@ -67,9 +67,13 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] private Animator MyAnimator;
     [SerializeField] private Animator OpponentAnimator;
+    [SerializeField] private GameObject MyAnimationCard;
+    [SerializeField] private GameObject OpponentAnimationCard;
 
     private Animator DealerAnimator;
     private Animator NoneDealerAnimator;
+
+    private GameObject DealingCard;
 
     int TurnId
     {
@@ -185,6 +189,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = MyAnimator;
             NoneDealerAnimator = OpponentAnimator;
+            DealingCard = MyAnimationCard;
             
             
         }
@@ -201,6 +206,7 @@ public class CardManager : MonoBehaviour
 
             DealerAnimator = OpponentAnimator;
             NoneDealerAnimator = MyAnimator;
+            DealingCard = OpponentAnimationCard;
             
 
             
@@ -489,6 +495,7 @@ public void MoveCardWithDelay(Card card, Transform newParent, Card.CardType newT
 private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardType newType, float delay)
 {
     isDealing = true;
+    DealingCard.SetActive(true);
     // Perform the actual movement
     if (card != null) // Safety check in case card was destroyed during delay
     {
@@ -513,6 +520,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         }
 
     isDealing = false;
+    DealingCard.SetActive(false);
 
 
 }
