@@ -458,7 +458,7 @@ private void ExecuteCardDraw(Card cardScript)
             }
 
             
-
+            gameOver = true;
             
             //Pack.SetActive(false);
             
@@ -510,8 +510,10 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         Debug.Log($"Delayed Move Complete: {card.name} moved to {newParent.name}");
     }
 
+    yield return new WaitForSeconds(delay * 0.7f);
+    DealingCard.SetActive(false);
      // Wait for the specified time
-    yield return new WaitForSeconds(delay);
+    yield return new WaitForSeconds(delay * 0.3f);
 
     card.gameObject.SetActive(true); // Activate the card after the delay
     if(gameState == GameState.WIN || gameState == GameState.LOSE)
@@ -520,7 +522,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         }
 
     isDealing = false;
-    DealingCard.SetActive(false);
+    
 
 
 }
