@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-[RequireComponent(typeof(Collider2D))] 
+[RequireComponent(typeof(Collider))] 
 public class Card : MonoBehaviour
 {
     // --- Card Attributes ---
@@ -39,6 +39,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
+        Debug.Log($"Card: OnMouseDown detected on {cardSymbol} {cardValue} of type {cardtype}");
         if (CardManager.Instance != null)
         {
             if(cardtype == CardType.Selection)
