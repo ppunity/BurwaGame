@@ -459,6 +459,11 @@ private void ExecuteCardDraw(Card cardScript)
             
             gameOver = true;
             
+            if(Pack.transform.childCount == 0)
+            {
+                DealerAnimator.SetBool("Deal", false);
+            }
+            
             //Pack.SetActive(false);
             
             
@@ -483,7 +488,7 @@ private void ExecuteCardDraw(Card cardScript)
 
 
 
-   /// <summary>
+/// <summary>
 /// Starts the delayed movement process.
 /// </summary>
 public void MoveCardWithDelay(Card card, Transform newParent, Card.CardType newType, float delay)
@@ -494,6 +499,9 @@ public void MoveCardWithDelay(Card card, Transform newParent, Card.CardType newT
 private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardType newType, float delay)
 {
     isDealing = true;
+    DealingCard.SetActive(dealFromTop);
+     // Wait for a short moment before starting the move
+    yield return new WaitForSeconds(delay * 0.1f);
     DealingCard.SetActive(true);
     // Perform the actual movement
     if (card != null) // Safety check in case card was destroyed during delay
@@ -509,7 +517,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         Debug.Log($"Delayed Move Complete: {card.name} moved to {newParent.name}");
     }
 
-    yield return new WaitForSeconds(delay * 0.7f);
+    yield return new WaitForSeconds(delay * 0.6f);
     DealingCard.SetActive(false);
      // Wait for the specified time
     yield return new WaitForSeconds(delay * 0.3f);
@@ -521,6 +529,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         }
 
     isDealing = false;
+   
     
 
 
