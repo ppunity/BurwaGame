@@ -13,7 +13,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 using Unity.VisualScripting;
-using UnityEngine.InputSystem.Android;
 using Photon.Realtime;
 
 public class CardManager : MonoBehaviour

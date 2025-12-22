@@ -123,13 +123,14 @@ namespace CardGame{
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer) {
+            Debug.Log("Player Left Room: " + otherPlayer.NickName);
             if (SceneManager.GetActiveScene().name == "Game") {
                 CardManager.Instance.CheckRoomPlayers();
             }
         }
 
         public override void OnDisconnected(DisconnectCause cause) {
-            //PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LeaveRoom();
             
         }
 
