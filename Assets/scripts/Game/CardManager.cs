@@ -513,32 +513,16 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         Debug.Log($"Delayed Move Complete: {card.name} moved to {newParent.name}");
     }
 
-    float wt1 = 0;
-    float wt2 = 0f;
-    float wt3 = 0f;
 
-    if(newType == Card.CardType.Discard)
-    {
-        wt1 = 0.7f;
-        wt2 = 0.3f;
-        wt3 = 0f;
-    }
-    else
-    {
-        wt1 = 0.3f;
-        wt2 = 0.4f;
-        wt3 = 0.3f;
-    }
-    
     DealingCard.SetActive(dealFromTop);
      // Wait for a short moment before starting the move
-    yield return new WaitForSeconds(delay * wt1);
+    yield return new WaitForSeconds(delay * 0.3f);
     DealingCard.SetActive(true);
 
-    yield return new WaitForSeconds(delay * wt2);
+    yield return new WaitForSeconds(delay * 0.4f);
     DealingCard.SetActive(false);
      // Wait for the specified time
-    yield return new WaitForSeconds(delay * wt3);
+    yield return new WaitForSeconds(delay * 0.3f);
 
     card.gameObject.SetActive(true); // Activate the card after the delay
     if(gameState == GameState.WIN || gameState == GameState.LOSE)
