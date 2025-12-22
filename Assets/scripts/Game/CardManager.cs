@@ -519,9 +519,9 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     if(newType == Card.CardType.Discard)
     {
-        wt1 = 0.5f;
+        wt1 = 0.7f;
         wt2 = 0.3f;
-        wt3 = 0.2f;
+        wt3 = 0f;
     }
     else
     {
