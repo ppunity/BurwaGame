@@ -17,8 +17,12 @@ using Photon.Realtime;
 
 public class CardManager : MonoBehaviour
 {
-    // --- Static Singleton Reference ---
+
+    [Header("AutoDeal")]
+    public bool AutoDeal = false;
+
     
+
     // The static field that holds the single instance of the CardManager.
     public static CardManager Instance { get; private set; } 
 
@@ -49,6 +53,7 @@ public class CardManager : MonoBehaviour
 
     public bool isDealing = false;
 
+    
     private int turnId_;
 
     private bool dealFromTop = true;
@@ -240,24 +245,20 @@ public class CardManager : MonoBehaviour
 
     public void Shuffle()
     {
+        photonView.RPC("ReceiveShuffleRPC", RpcTarget.All);        
+    }
+
+    [PunRPC]
+    void ReceiveShuffleRPC()
+    {        
         StartCoroutine(ShuffleCoroutine());
     }
 
     IEnumerator ShuffleCoroutine()
     {
+        DealerAnimator.SetTrigger("shuffle");
         yield return new WaitForSeconds(3f);
-        ShuffleDone();
-    }
-
-
-    public void ShuffleDone()
-    {
-        photonView.RPC("ReceiveShuffleDoneRPC", RpcTarget.All);
-    }
-
-    [PunRPC]    
-    void ReceiveShuffleDoneRPC()
-    {
+        DealerAnimator.SetTrigger("shuffleDone");
         shufflePanel.SetActive(false);
         WaitForShufflePanel.SetActive(false);
 
@@ -267,6 +268,7 @@ public class CardManager : MonoBehaviour
             statusText.gameObject.SetActive(true);
         }
     }
+
 
 
     public void SetDealFromTop(bool fromTop)

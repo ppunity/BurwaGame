@@ -54,7 +54,7 @@ public class Card : MonoBehaviour
                 }
                 
             }
-            else if(cardtype == CardType.Pack)
+            else if(cardtype == CardType.Pack && !CardManager.Instance.AutoDeal)
             {
                 if(CardManager.Instance.masterClientTag == "Dealer")
                 {
