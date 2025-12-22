@@ -17,6 +17,8 @@ namespace CardGame{
             if (Instance == null) {
                 Instance = this;
             }
+
+            DontDestroyOnLoad(this.gameObject);
         }
 
         public void Start() {
