@@ -203,7 +203,7 @@ public class CardManager : MonoBehaviour
             isPlayerOneTurn = true;
 
             CreateSelection();            
-            Selection.SetActive(true);
+            Selection.SetActive(false);
 
             shufflePanel.SetActive(false);
             WaitForShufflePanel.SetActive(true);
@@ -266,6 +266,11 @@ public class CardManager : MonoBehaviour
         {
             statusText.text = "Waiting for Opponent to Select Card";
             statusText.gameObject.SetActive(true);
+        }
+        else
+        {
+            Selection.SetActive(true);
+
         }
     }
 
