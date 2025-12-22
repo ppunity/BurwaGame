@@ -402,8 +402,7 @@ private void ExecuteCardDraw(Card cardScript)
     // Logic for Discarding the first two cards (turnId_ = 0 and 1)
     if (turnId_ < 2)
     {
-        MoveCardWithDelay(cardScript, DisCards.transform, Card.CardType.Discard, 0.5f);
-        Debug.Log($"Card {cardScript.name} moved to Discard (Turn {turnId_}).");
+        
         if(masterClientTag == "Dealer")
             {
                 DealerAnimator.SetTrigger("left");
@@ -412,7 +411,8 @@ private void ExecuteCardDraw(Card cardScript)
             {
                 DealerAnimator.SetTrigger("right");
             }
-        
+        MoveCardWithDelay(cardScript, DisCards.transform, Card.CardType.Discard, 0.5f);
+        Debug.Log($"Card {cardScript.name} moved to Discard (Turn {turnId_}).");
     }
     // Logic for Dealing to Hands (turnId_ >= 2)
     else 
@@ -479,7 +479,7 @@ private void ExecuteCardDraw(Card cardScript)
     turnId_++;
 
     // 5. Update Visuals
-    cardScript.UpdateCardVisual();
+    //cardScript.UpdateCardVisual();
 
     Debug.Log($"State Sync: Turn ID is now {turnId_}. Next turn: {(isPlayerOneTurn ? "Player 1" : "Player 2")}");
 }
