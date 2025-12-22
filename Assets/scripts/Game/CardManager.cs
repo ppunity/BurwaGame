@@ -73,6 +73,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Animator OpponentAnimator;
     [SerializeField] private GameObject MyAnimationCard;
     [SerializeField] private GameObject OpponentAnimationCard;
+    [SerializeField] private GameObject fadePanel;
 
     private Animator DealerAnimator;
     private Animator NoneDealerAnimator;
@@ -258,6 +259,8 @@ public class CardManager : MonoBehaviour
     {
         DealerAnimator.SetTrigger("shuffle");
         yield return new WaitForSeconds(3f);
+        fadePanel.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
         DealerAnimator.SetTrigger("shuffleDone");
         shufflePanel.SetActive(false);
         WaitForShufflePanel.SetActive(false);
