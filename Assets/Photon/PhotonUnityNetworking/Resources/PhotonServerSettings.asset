@@ -44,6 +44,7 @@ MonoBehaviour:
   - SynchronizeCardDrawRPC
   - ReceiveShuffleDoneRPC
   - ReceiveSetDealFromTopRPC
+  - ReceiveShuffleRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
