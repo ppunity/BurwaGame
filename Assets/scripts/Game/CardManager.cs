@@ -499,10 +499,6 @@ public void MoveCardWithDelay(Card card, Transform newParent, Card.CardType newT
 private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardType newType, float delay)
 {
     isDealing = true;
-    DealingCard.SetActive(dealFromTop);
-     // Wait for a short moment before starting the move
-    yield return new WaitForSeconds(delay * 0.1f);
-    DealingCard.SetActive(true);
     // Perform the actual movement
     if (card != null) // Safety check in case card was destroyed during delay
     {
@@ -516,8 +512,13 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         
         Debug.Log($"Delayed Move Complete: {card.name} moved to {newParent.name}");
     }
+    
+    DealingCard.SetActive(dealFromTop);
+     // Wait for a short moment before starting the move
+    yield return new WaitForSeconds(delay * 0.3f);
+    DealingCard.SetActive(true);
 
-    yield return new WaitForSeconds(delay * 0.6f);
+    yield return new WaitForSeconds(delay * 0.4f);
     DealingCard.SetActive(false);
      // Wait for the specified time
     yield return new WaitForSeconds(delay * 0.3f);
