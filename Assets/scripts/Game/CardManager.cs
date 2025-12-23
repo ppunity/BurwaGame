@@ -320,12 +320,28 @@ public class CardManager : MonoBehaviour
     [PunRPC]
     void ReceiveSetDealFromTopRPC(bool fromTop)
     {
+        StartCoroutine(StartDealCoroutine(fromTop));
+    }
+
+    IEnumerator StartDealCoroutine(bool fromTop)
+    {
+        OrderSelecrtionPanel.SetActive(false);
+        if(masterClientTag == "Dealer")
+        {
+            StatusPanel.SetActive(true);
+            statusText.text = fromTop ? "Click card pack to deal from Top" : "Click card pack to deal from Bottom";
+        }        
+
+        yield return new WaitForSeconds(1f); 
+        fadePanel.SetActive(true);
+        yield return new WaitForSeconds(1f); 
+
         dealFromTop = fromTop;
         StatusPanel.SetActive(false);
-        OrderSelecrtionPanel.SetActive(false);
-        fadePanel.SetActive(true);
+        
+        
 
-         if(masterClientTag == "Dealer")
+        if(masterClientTag == "Dealer")
         {
             CreateFullPack();
         }
