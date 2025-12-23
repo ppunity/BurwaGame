@@ -62,9 +62,9 @@ public class CardManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI CurrentValueText;
 
     [SerializeField] private GameObject shufflePanel;
-    [SerializeField] private GameObject WaitForShufflePanel;
+   
     [SerializeField] private GameObject CutPanel;
-
+     [SerializeField] private GameObject StatusPanel;
     [SerializeField] TextMeshProUGUI statusText;
     [SerializeField] TextMeshProUGUI PriceText;
 
@@ -191,7 +191,7 @@ public class CardManager : MonoBehaviour
 
 
             shufflePanel.SetActive(true);
-            WaitForShufflePanel.SetActive(false);
+            StatusPanel.SetActive(false);
 
             DealerAnimator = MyAnimator;
             NoneDealerAnimator = OpponentAnimator;
@@ -208,7 +208,8 @@ public class CardManager : MonoBehaviour
             Selection.SetActive(false);
 
             shufflePanel.SetActive(false);
-            WaitForShufflePanel.SetActive(true);
+            StatusPanel.SetActive(true);
+            statusText.text = "Waiting Opponent to Shuffle";
 
             DealerAnimator = OpponentAnimator;
             NoneDealerAnimator = MyAnimator;
@@ -227,7 +228,6 @@ public class CardManager : MonoBehaviour
             obj.SetActive(false);
         }
 
-        statusText.gameObject.SetActive(false);
 
         OrderSelecrtionPanel.SetActive(false);
 
@@ -259,7 +259,7 @@ public class CardManager : MonoBehaviour
     IEnumerator ShuffleCoroutine()
     {
         shufflePanel.SetActive(false);
-        WaitForShufflePanel.SetActive(false);
+        StatusPanel.SetActive(false);
         DealerAnimator.SetTrigger("shuffle");
         yield return new WaitForSeconds(3f);
         fadePanel.SetActive(true);
@@ -268,8 +268,8 @@ public class CardManager : MonoBehaviour
         
         if(masterClientTag == "Dealer")
         {
+            StatusPanel.SetActive(true);
             statusText.text = "Waiting for Opponent to Cut";
-            statusText.gameObject.SetActive(true);
         }
         else
         {
@@ -291,14 +291,16 @@ public class CardManager : MonoBehaviour
 
     IEnumerator CutCoroutine()
     {
+        CutPanel.SetActive(false);
+        StatusPanel.SetActive(false);
         NoneDealerAnimator.SetTrigger("cut");
         yield return new WaitForSeconds(4f);
         fadePanel.SetActive(true);
 
         if(masterClientTag == "Dealer")
         {
+            StatusPanel.SetActive(true);
             statusText.text = "Waiting for Opponent to Select Card";
-            statusText.gameObject.SetActive(true);
         }
         else
         {
@@ -318,10 +320,8 @@ public class CardManager : MonoBehaviour
     void ReceiveSetDealFromTopRPC(bool fromTop)
     {
         dealFromTop = fromTop;
-        if(OrderSelecrtionPanel != null && OrderSelecrtionPanel.activeSelf)
-        {
-            OrderSelecrtionPanel.SetActive(false);
-        }
+        StatusPanel.SetActive(false);
+        OrderSelecrtionPanel.SetActive(false);
 
          if(masterClientTag == "Dealer")
         {
@@ -345,6 +345,7 @@ public class CardManager : MonoBehaviour
         // Check if the clicked card belongs to the 'Selection' context (based on its parent)
         if (cardScript.transform.parent != null && cardScript.transform.parent.gameObject == Selection)
         {
+            StatusPanel.SetActive(false);
             Selection.SetActive(false); 
             OrderSelecrtionPanel.SetActive(true);       
             SendTrumpSelectedRPC(cardScript.CardValue); 
@@ -374,8 +375,8 @@ public class CardManager : MonoBehaviour
 
         if(masterClientTag == "Dealer")
             {
+                StatusPanel.SetActive(true);
                 statusText.text = "Waiting for Opponent Select Order";
-                statusText.gameObject.SetActive(true);
             }
     }
     
@@ -825,7 +826,6 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         {
             obj.SetActive(true);
         }
-        statusText.gameObject.SetActive(false);
 
         if(!dealFromTop)
         {

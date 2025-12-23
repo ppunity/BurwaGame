@@ -36,6 +36,7 @@ public class Card : MonoBehaviour
 
     [SerializeField] private Sprite cardbackSprite;
     [SerializeField] private Sprite cardfrontSprite;
+    [SerializeField] private Sprite TrumpCardSprite;
 
     private void OnMouseDown()
     {
@@ -130,7 +131,7 @@ public class Card : MonoBehaviour
             Debug.LogWarning("Card: TextMeshPro component is not assigned.");
         }
 
-        if (cardtype == CardType.Pack || cardtype == CardType.Discard && cardbackSprite != null)
+        if (cardtype == CardType.Pack || cardtype == CardType.Discard )
         {
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
             if (sr != null)
@@ -140,12 +141,21 @@ public class Card : MonoBehaviour
 
             cardTextMesh.text = "";
         }
-        else if((cardtype == CardType.Selection || cardtype == CardType.Hand_P1 || cardtype == CardType.Hand_P2) && cardbackSprite != null)
+        else if(cardtype == CardType.Hand_P1 || cardtype == CardType.Hand_P2 )
         {
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
             if (sr != null)
             {
                 sr.sprite = cardfrontSprite;
+            }
+            cardTextMesh.text = displayText;
+        }
+        else if(cardtype == CardType.Selection)
+        {
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sprite = TrumpCardSprite;
             }
             cardTextMesh.text = displayText;
         }

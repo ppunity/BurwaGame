@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: -7405487904183757900, guid: 08c65229748718743995c096bfd8e678, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,8 +104,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 08c65229748718743995c096bfd8e678, type: 2}
+  m_sharedMaterial: {fileID: -7405487904183757900, guid: 08c65229748718743995c096bfd8e678, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -284,6 +284,7 @@ MonoBehaviour:
   cardTextMesh: {fileID: 4374921201421420175}
   cardbackSprite: {fileID: -5044639396517056953, guid: b13734a83e596e44c9a3589d3993f3cd, type: 3}
   cardfrontSprite: {fileID: -2842052407051664608, guid: ba24a94c70a89bb48a036aaffc97e971, type: 3}
+  TrumpCardSprite: {fileID: -898118955, guid: 7d3214815d20cab42bf07a6f2a265ad3, type: 3}
 --- !u!65 &7074250907458852385
 BoxCollider:
   m_ObjectHideFlags: 0
