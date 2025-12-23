@@ -5618,8 +5618,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 08c65229748718743995c096bfd8e678, type: 2}
+  m_sharedMaterial: {fileID: -7405487904183757900, guid: 08c65229748718743995c096bfd8e678, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6469,7 +6469,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 5189691121816951081, guid: add06a45986a14d428fe9811e8e1a7df, type: 3}
+  m_Sprite: {fileID: -2842052407051664608, guid: ba24a94c70a89bb48a036aaffc97e971, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -8192,18 +8192,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 428963146}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1223908068}
         m_TargetAssemblyTypeName: CardManager, Assembly-CSharp
         m_MethodName: Shuffle
@@ -9678,12 +9666,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -230253050, guid: a6581cf3eab766b429d429ec514cc02f, type: 3}
+  m_Sprite: {fileID: -2842052407051664608, guid: ba24a94c70a89bb48a036aaffc97e971, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.56, y: 3.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -10584,7 +10572,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2842052407051664608, guid: ba24a94c70a89bb48a036aaffc97e971, type: 3}
+  m_Sprite: {fileID: -898118955, guid: 7d3214815d20cab42bf07a6f2a265ad3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12031,7 +12019,7 @@ MonoBehaviour:
   CurrentValueText: {fileID: 564086987}
   shufflePanel: {fileID: 428963146}
   WaitForShufflePanel: {fileID: 209899473}
-  CutPanel: {fileID: 0}
+  CutPanel: {fileID: 1890077286}
   statusText: {fileID: 1279942648}
   PriceText: {fileID: 1054993325}
   OrderSelecrtionPanel: {fileID: 1227596075}

@@ -258,14 +258,14 @@ public class CardManager : MonoBehaviour
 
     IEnumerator ShuffleCoroutine()
     {
+        shufflePanel.SetActive(false);
+        WaitForShufflePanel.SetActive(false);
         DealerAnimator.SetTrigger("shuffle");
         yield return new WaitForSeconds(3f);
         fadePanel.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         DealerAnimator.SetTrigger("shuffleDone");
-        shufflePanel.SetActive(false);
-        WaitForShufflePanel.SetActive(false);
-
+        
         if(masterClientTag == "Dealer")
         {
             statusText.text = "Waiting for Opponent to Cut";
