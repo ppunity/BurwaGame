@@ -63,6 +63,7 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] private GameObject shufflePanel;
     [SerializeField] private GameObject WaitForShufflePanel;
+    [SerializeField] private GameObject CutPanel;
 
     [SerializeField] TextMeshProUGUI statusText;
     [SerializeField] TextMeshProUGUI PriceText;
@@ -264,6 +265,35 @@ public class CardManager : MonoBehaviour
         DealerAnimator.SetTrigger("shuffleDone");
         shufflePanel.SetActive(false);
         WaitForShufflePanel.SetActive(false);
+
+        if(masterClientTag == "Dealer")
+        {
+            statusText.text = "Waiting for Opponent to Cut";
+            statusText.gameObject.SetActive(true);
+        }
+        else
+        {
+            CutPanel.SetActive(true);
+
+        }
+    }
+
+    public void Cut()
+    {
+        photonView.RPC("ReceiveCutRPC", RpcTarget.All);        
+    }
+
+    [PunRPC]
+    void ReceiveCutRPC()
+    {        
+        StartCoroutine(CutCoroutine());
+    }
+
+    IEnumerator CutCoroutine()
+    {
+        NoneDealerAnimator.SetTrigger("cut");
+        yield return new WaitForSeconds(4f);
+        fadePanel.SetActive(true);
 
         if(masterClientTag == "Dealer")
         {
