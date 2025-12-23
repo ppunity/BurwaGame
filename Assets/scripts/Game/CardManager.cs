@@ -333,11 +333,12 @@ public class CardManager : MonoBehaviour
         }        
 
         yield return new WaitForSeconds(1f); 
+        StatusPanel.SetActive(false);
         fadePanel.SetActive(true);
         yield return new WaitForSeconds(1f); 
 
         dealFromTop = fromTop;
-        StatusPanel.SetActive(false);
+        
         
         
 
