@@ -294,8 +294,9 @@ public class CardManager : MonoBehaviour
         CutPanel.SetActive(false);
         StatusPanel.SetActive(false);
         NoneDealerAnimator.SetTrigger("cut");
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3f);
         fadePanel.SetActive(true);
+        yield return new WaitForSeconds(1f);
 
         if(masterClientTag == "Dealer")
         {
@@ -322,6 +323,7 @@ public class CardManager : MonoBehaviour
         dealFromTop = fromTop;
         StatusPanel.SetActive(false);
         OrderSelecrtionPanel.SetActive(false);
+        fadePanel.SetActive(true);
 
          if(masterClientTag == "Dealer")
         {
