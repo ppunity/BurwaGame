@@ -261,11 +261,10 @@ public class CardManager : MonoBehaviour
         shufflePanel.SetActive(false);
         StatusPanel.SetActive(false);
         DealerAnimator.SetTrigger("shuffle");
-        yield return new WaitForSeconds(3f);        
-        DealerAnimator.SetTrigger("shuffleDone");
+        yield return new WaitForSeconds(3f);
         fadePanel.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        
+        yield return new WaitForSeconds(1f);                
+        DealerAnimator.SetTrigger("shuffleDone");
         if(masterClientTag == "Dealer")
         {
             StatusPanel.SetActive(true);
@@ -335,8 +334,6 @@ public class CardManager : MonoBehaviour
         yield return new WaitForSeconds(1f); 
         StatusPanel.SetActive(false);
         fadePanel.SetActive(true);
-        yield return new WaitForSeconds(1f); 
-
         dealFromTop = fromTop;
         
         
