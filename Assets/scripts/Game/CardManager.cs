@@ -330,10 +330,10 @@ public class CardManager : MonoBehaviour
             StatusPanel.SetActive(true);
             statusText.text = fromTop ? "Click card pack to deal from Top" : "Click card pack to deal from Bottom";
         }        
-
-        yield return new WaitForSeconds(1f); 
         StatusPanel.SetActive(false);
         fadePanel.SetActive(true);
+        yield return new WaitForSeconds(1f); 
+        
         dealFromTop = fromTop;
         
         
