@@ -928,7 +928,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     public void GameOver()
     {
-        //PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LeaveRoom();
         
         winText.SetActive(true);
         if (gameState == GameState.WIN)
