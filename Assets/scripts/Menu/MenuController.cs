@@ -102,7 +102,10 @@ public class MenuController : MonoBehaviour
 
     public void VsJoinedRoom()
     {
-        SetOS();
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            SetOS();
+        }
     }
 
     IEnumerator startGameCoroutine()
