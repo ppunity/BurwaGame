@@ -12598,8 +12598,8 @@ MonoBehaviour:
   MyAnimationCard: {fileID: 433965263}
   OpponentAnimationCard: {fileID: 232657359}
   fadePanel: {fileID: 109650417}
-  WinVid: {fileID: 0}
-  LossVid: {fileID: 0}
+  WinVid: {fileID: 2007765422}
+  LossVid: {fileID: 748735556}
   cardSymbols:
   - Hearts
   - Diamonds
