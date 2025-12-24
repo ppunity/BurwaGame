@@ -93,7 +93,7 @@ public class MenuController : MonoBehaviour
             
         }
 
-        
+
         SetOS();
 
         StartCoroutine(startGameCoroutine());
@@ -102,7 +102,7 @@ public class MenuController : MonoBehaviour
 
     public void VsJoinedRoom()
     {
-        
+        SetOS();
     }
 
     IEnumerator startGameCoroutine()
