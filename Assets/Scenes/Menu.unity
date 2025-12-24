@@ -947,7 +947,7 @@ MonoBehaviour:
   Header: {fileID: 2434837179359150076}
   loadingPanel: {fileID: 6830430817632483316}
   loadingBar: {fileID: 1266182960925164043}
-  vsPanel: {fileID: 0}
+  vsPanel: {fileID: 7031872486789541672}
   OpponentS: 0
   dp: {fileID: 2159420337449686433}
   coinflow: {fileID: 7865726089969629056}
