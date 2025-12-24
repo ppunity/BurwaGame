@@ -914,12 +914,12 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
     {
         if (gameState == GameState.WIN || gameState == GameState.LOSE)
         {
-            PhotonNetwork.LeaveRoom();
-            return;
-        }
-        
-
-        if (PhotonNetwork.PlayerList.Length == 1)
+            if(PhotonNetwork.InRoom)
+            {
+                PhotonNetwork.LeaveRoom();
+            }
+            
+        }else if (PhotonNetwork.PlayerList.Length == 1)
         {
             gameState = GameState.WIN;
             GameOver();
@@ -928,7 +928,10 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     public void GameOver()
     {
-        PhotonNetwork.LeaveRoom();
+        if(PhotonNetwork.InRoom)
+            {
+                PhotonNetwork.LeaveRoom();
+            }
         
         winText.SetActive(true);
         if (gameState == GameState.WIN)
