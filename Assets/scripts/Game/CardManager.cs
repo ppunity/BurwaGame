@@ -912,7 +912,12 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     public void CheckRoomPlayers()
     {
-        if (gameState == GameState.WIN || gameState == GameState.LOSE) return;
+        if (gameState == GameState.WIN || gameState == GameState.LOSE)
+        {
+            PhotonNetwork.LeaveRoom();
+            return;
+        }
+        
 
         if (PhotonNetwork.PlayerList.Length == 1)
         {
@@ -945,7 +950,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     public void GoHome()
     {
-        PhotonNetwork.LeaveRoom();
+        
         SceneManager.LoadScene("Menu");
     }
 }
