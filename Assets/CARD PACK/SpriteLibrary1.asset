@@ -28,9 +28,48 @@ MonoBehaviour:
     - {fileID: -732719750, guid: bfbb48cec7561804fbfa7a032148a395, type: 3}
     - {fileID: -509673874, guid: b6cc7c7826898134cb2b3791e16abbb0, type: 3}
     - {fileID: 75749219, guid: e929f9f1d07830d4ca7ef37f798863bb, type: 3}
-  - setName: 
-    sprites: []
-  - setName: 
-    sprites: []
-  - setName: 
-    sprites: []
+  - setName: Diamonds
+    sprites:
+    - {fileID: 52546618, guid: e7b6c4f644f6a974cbf9ab277188c711, type: 3}
+    - {fileID: 235343297, guid: 363a9b8f957a58e4da952ba146262d97, type: 3}
+    - {fileID: -983792910, guid: 9fb46151dd77d9948919b6cda045e4eb, type: 3}
+    - {fileID: -1890502385, guid: 244dc9efceb46f0409b89dbe63ca3d8f, type: 3}
+    - {fileID: 1160471888, guid: 31b1a9c8942b6ee41b5f1e19bcba9b59, type: 3}
+    - {fileID: 4644636, guid: aa709323211c0f746a215a08014dccb6, type: 3}
+    - {fileID: -354226922, guid: 57873f2103294cc428c2b29656e29a98, type: 3}
+    - {fileID: -334098016, guid: fa4d6e8d0e7e36e4084128dc1c59171c, type: 3}
+    - {fileID: 10303337, guid: 2ff413d28b166d149b977bfa5e79f091, type: 3}
+    - {fileID: 225374817, guid: 62573fc3dbbacb84e8efb16362f74a8e, type: 3}
+    - {fileID: 1208218791, guid: ec0c762606dd94e449127bd8fb78a02d, type: 3}
+    - {fileID: 1229827801, guid: 92fe402939dc51e4bae2f7b77ae10ecd, type: 3}
+    - {fileID: -1427213330, guid: 949df8919a07f934c81dcdf6be9dcba3, type: 3}
+  - setName: Clubs
+    sprites:
+    - {fileID: -464338509, guid: 3f4b6e88f51932b45847e5d5dd5706cd, type: 3}
+    - {fileID: 1427166874, guid: 592bf3ca1cb569b4c93ffde70f63b1c3, type: 3}
+    - {fileID: -388101618, guid: 62de05d3e8e3671438bf539be33c048b, type: 3}
+    - {fileID: -1897550806, guid: 72b313f5b90546845820426a71562666, type: 3}
+    - {fileID: 1185748791, guid: 31b689bbcec638b429772d91de9ecd90, type: 3}
+    - {fileID: -2114440527, guid: 6554cd0364f9a6144be1a118eabec524, type: 3}
+    - {fileID: -1539968099, guid: 0c0b4b313fe5df8439a306f729bc7d50, type: 3}
+    - {fileID: 1850640210, guid: ec92320cf2118624fadf919d35d3b85f, type: 3}
+    - {fileID: -1858805782, guid: 126f8610ae788ca44905440b4eea8e8d, type: 3}
+    - {fileID: 1080592723, guid: 1f4eca9dc56236244aa1f21245631115, type: 3}
+    - {fileID: -1671400202, guid: 86d300a092f181a4f8f2f9d3b1d5500d, type: 3}
+    - {fileID: 651562186, guid: 479e792b9f955b646b155fa3793659c2, type: 3}
+    - {fileID: 1941089090, guid: 8bd9019b9427e14418b46e1dde32e157, type: 3}
+  - setName: Spades
+    sprites:
+    - {fileID: 907384594, guid: fa6bc1c2c26994b4580c19873ab77beb, type: 3}
+    - {fileID: -2051379086, guid: 987c58d9eb3a5ca4295788dbbb88c81c, type: 3}
+    - {fileID: 979458026, guid: fd469c10d52fce2448851e77b779e4f0, type: 3}
+    - {fileID: 1747974425, guid: 06bb371990f3e6243b4c2e70bda4688d, type: 3}
+    - {fileID: 1470586031, guid: 850e69404f496a3479a49fb141b3a88d, type: 3}
+    - {fileID: -219579861, guid: de0e85859e5369647a2d2f26b187e8ba, type: 3}
+    - {fileID: 1254837462, guid: 8c3296bd134c8d642988ddcd132d745a, type: 3}
+    - {fileID: 729599959, guid: ba1bca572a5640f4cb45e0442fde7cce, type: 3}
+    - {fileID: -87448563, guid: 29d8210666a668845ae3ffd20a427fff, type: 3}
+    - {fileID: -385512513, guid: 8f21a06ab532348418850dd384c3829e, type: 3}
+    - {fileID: -1546489008, guid: 6d591d2080dbc2d418e296b2a99ec339, type: 3}
+    - {fileID: 769080646, guid: 28b501a923ada004e9b72703cd6debd0, type: 3}
+    - {fileID: -484735475, guid: faaa4daf56c7b8a478a75790ac006630, type: 3}

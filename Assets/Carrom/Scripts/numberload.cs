@@ -1,4 +1,5 @@
 using UnityEngine;
+using CardGame;
 
 public class numberload : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class numberload : MonoBehaviour
     
     public void MyEndNumberload()
     {
-        //FindAnyObjectByType<MenuController>().endNumberload();
+        FindAnyObjectByType<MenuController>().endNumberload();
     }   
     
 }

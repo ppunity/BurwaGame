@@ -44,8 +44,6 @@ namespace CardGame{
 
         public override void OnJoinedLobby(){
             Debug.Log("joined lobby");
-
-            MenuController.Instance.StartButton.SetActive(true);
         }
 
         public override void OnLeftLobby(){
