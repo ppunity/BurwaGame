@@ -360,11 +360,11 @@ public class MenuController : MonoBehaviour
 
             if(RoomName == "galle")
             {
-                mainPlayerPrize = 200;
+                mainPlayerPrize = 100;
             }
             else if(RoomName == "kandy")
             {
-                mainPlayerPrize = 400;
+                mainPlayerPrize = 200;
             }
             else if(RoomName == "colombo")
             {

@@ -76,6 +76,9 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject OpponentAnimationCard;
     [SerializeField] private GameObject fadePanel;
 
+    [SerializeField] private GameObject WinVid;
+    [SerializeField] private GameObject LossVid;
+
     private Animator DealerAnimator;
     private Animator NoneDealerAnimator;
 
@@ -163,15 +166,15 @@ public class CardManager : MonoBehaviour
         }
         else if(RoomName == "colombo")
         {
-            PriceText.text = "500";
+            PriceText.text = "1000";
         }
         else if(RoomName == "jaffna")
         {
-            PriceText.text = "1000";
+            PriceText.text = "2000";
         }
         else if(RoomName == "sigiri")
         {
-            PriceText.text = "5000";
+            PriceText.text = "10000";
         }
         
     }
@@ -920,20 +923,28 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     public void GameOver()
     {
+        PhotonNetwork.LeaveRoom();
         
         winText.SetActive(true);
         if (gameState == GameState.WIN)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Win!";
+            WinVid.SetActive(true);
         }
         else if (gameState == GameState.LOSE)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+            WinVid.SetActive(true);
         }
     }
 
     public void CheckTurn()
     {
         
+    }
+
+    public void GoHome()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
