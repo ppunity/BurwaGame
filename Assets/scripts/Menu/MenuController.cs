@@ -90,11 +90,19 @@ public class MenuController : MonoBehaviour
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
-            SetOS();
+            
         }
+
+        
+        SetOS();
 
         StartCoroutine(startGameCoroutine());
 
+    }
+
+    public void VsJoinedRoom()
+    {
+        
     }
 
     IEnumerator startGameCoroutine()
