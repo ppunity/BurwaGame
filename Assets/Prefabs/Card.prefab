@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4435b3ada51d8d4e926fbec36694a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteLibrary: {fileID: 11400000, guid: 69732b4c0e48274449c8e825b9759591, type: 2}
   cardSymbol: None
   cardValue: None
   cardtype: 0

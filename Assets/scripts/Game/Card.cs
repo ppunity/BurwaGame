@@ -5,6 +5,8 @@ using TMPro;
 public class Card : MonoBehaviour
 {
     // --- Card Attributes ---
+
+    public SpriteLibraryAsset spriteLibrary;
     
     [Header("Card Identity")]
     
@@ -143,12 +145,91 @@ public class Card : MonoBehaviour
         }
         else if(cardtype == CardType.Hand_P1 || cardtype == CardType.Hand_P2 )
         {
+            Sprite tmpSprite = cardfrontSprite;
+
+            int spriteSetIndex = 0;
+
+            if(cardSymbol == "Hearts")
+            {
+                spriteSetIndex = 0;
+            }
+            else if(cardSymbol == "Diamonds")
+            {
+                spriteSetIndex = 1;
+            }            
+            else if(cardSymbol == "Clubs")
+            {
+                spriteSetIndex = 2;
+            }            
+            else if(cardSymbol == "Spades")
+            {
+                spriteSetIndex = 3;
+            }
+
+            int spriteIndex = 0;
+
+            if(cardValue  == "2")
+            {
+                spriteIndex = 0;
+            }
+            else if(cardValue  == "3")
+            {
+                spriteIndex = 1;
+            }            
+            else if(cardValue  == "4")
+            {
+                spriteIndex = 2;
+            }            
+            else if(cardValue  == "5")
+            {
+                spriteIndex = 3;
+            }            
+            else if(cardValue  == "6")
+            {
+                spriteIndex = 4;
+            }            
+            else if(cardValue  == "7")
+            {
+                spriteIndex = 5;
+            }            
+            else if(cardValue  == "8")
+            {
+                spriteIndex = 6;
+            }            
+            else if(cardValue  == "9")
+            {
+                spriteIndex = 7;
+            }            
+            else if(cardValue  == "10")
+            {
+                spriteIndex = 8;
+            }            
+            else if(cardValue  == "J")
+            {
+                spriteIndex = 9;
+            }            
+            else if(cardValue  == "Q")
+            {
+                spriteIndex = 10;
+            }
+            else if(cardValue  == "K")
+            {
+                spriteIndex = 11;
+            }
+            else if(cardValue  == "A")
+            {
+                spriteIndex = 12;
+            }
+
+            tmpSprite = spriteLibrary.spriteSets[spriteSetIndex].sprites[spriteIndex];
+
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
             if (sr != null)
             {
-                sr.sprite = cardfrontSprite;
+                sr.sprite = tmpSprite;
             }
-            cardTextMesh.text = displayText;
+
+            cardTextMesh.text = "";
         }
         else if(cardtype == CardType.Selection)
         {
@@ -157,6 +238,7 @@ public class Card : MonoBehaviour
             {
                 sr.sprite = TrumpCardSprite;
             }
+
             cardTextMesh.text = displayText;
         }
 
