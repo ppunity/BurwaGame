@@ -107,8 +107,6 @@ namespace CardGame{
 
             if (SceneManager.GetActiveScene().name == "Menu") {
                 //MenuController.Instance.VsOnLeftRoom();
-            } else if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Practice"){
-                SceneManager.LoadScene("Menu");
             }
         }
 
