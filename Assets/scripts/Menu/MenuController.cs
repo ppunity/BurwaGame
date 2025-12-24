@@ -454,6 +454,7 @@ public class MenuController : MonoBehaviour
     public void SetOS()
     {
         OpponentStatus = 1;
+        UpdateVsNames();
     }
 
     public void PlayCoinCollectSound()
