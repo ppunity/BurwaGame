@@ -96,7 +96,7 @@ namespace CardGame{
                 }
 
                 PhotonNetwork.LocalPlayer.SetCustomProperties(userHastable);
-                //MenuController.Instance.VsJoinedRoom();
+                MenuController.Instance.VsJoinedRoom();
                 PhotonNetwork.AutomaticallySyncScene = true;
             
             Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
