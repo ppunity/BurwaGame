@@ -879,9 +879,14 @@ public static class PlayportDataHelper
     public static string GetUsername(string fallback = "Guest")
     {
        var userData = playport.Instance.GetCurrentUserData();
-       return userData.username;
-        
+       return userData.username;        
        
+    }
+
+    public static string GetProfileUrl(string fallback = "Guest")
+    {
+        var userData = playport.Instance.GetCurrentUserData();
+       return userData.profile_image_url;  
     }
 
     /// <summary>
