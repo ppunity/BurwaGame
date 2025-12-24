@@ -13,12 +13,19 @@ namespace CardGame{
         public int roomEntryPice = 0;
 
 
-        void Awake() {
+        void Awake()
+        {
+            // Check if an instance already exists
             if (Instance == null) {
+                // If not, this is the main instance
                 Instance = this;
+                DontDestroyOnLoad(this.gameObject);
             }
-
-            DontDestroyOnLoad(this.gameObject);
+            else if (Instance != this) {
+                // If an instance exists and it's not THIS one, destroy this copy
+                Destroy(gameObject);
+                return; // Exit the method so no further logic runs
+            }
         }
 
         public void Start() {
