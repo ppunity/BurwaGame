@@ -934,7 +934,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         else if (gameState == GameState.LOSE)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Lose!";
-            WinVid.SetActive(true);
+            LossVid.SetActive(true);
         }
     }
 
