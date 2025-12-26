@@ -1000,13 +1000,35 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         if (gameState == GameState.WIN)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Win!";
-            WinVid.SetActive(true);
+
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(8f, 5f, showWin));
+           
+            
         }
         else if (gameState == GameState.LOSE)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Lose!";
-            LossVid.SetActive(true);
+
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(8f, 5f, showLoss));
         }
+    }
+
+    public void showWin()
+    {
+        WinVid.SetActive(true);
+    }
+
+    public void showLoss()
+    {
+        LossVid.SetActive(true);
     }
 
     public void CheckTurn()
