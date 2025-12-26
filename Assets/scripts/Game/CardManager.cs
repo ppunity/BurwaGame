@@ -60,21 +60,22 @@ public class CardManager : MonoBehaviour
 
     [SerializeField] private GameObject CurrentValuePanel;
     [SerializeField] private TextMeshProUGUI CurrentValueText;
-
-    [SerializeField] private GameObject shufflePanel;
-   
+    [SerializeField] private GameObject shufflePanel;   
     [SerializeField] private GameObject CutPanel;
-     [SerializeField] private GameObject StatusPanel;
+    [SerializeField] private GameObject StatusPanel;
     [SerializeField] TextMeshProUGUI statusText;
     [SerializeField] TextMeshProUGUI PriceText;
-
     [SerializeField] private GameObject OrderSelecrtionPanel;
-
     [SerializeField] private Animator MyAnimator;
     [SerializeField] private Animator OpponentAnimator;
     [SerializeField] private GameObject MyAnimationCard;
     [SerializeField] private GameObject OpponentAnimationCard;
     [SerializeField] private GameObject fadePanel;
+
+    [SerializeField] private GameObject TimerPanel;
+    [SerializeField] private Image Clock;
+    [SerializeField] private TextMeshProUGUI TimeText;
+    private Coroutine CurrntTimer;
 
     [SerializeField] private GameObject WinVid;
     [SerializeField] private GameObject LossVid;
@@ -194,8 +195,13 @@ public class CardManager : MonoBehaviour
 
 
             shufflePanel.SetActive(true);
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, Shuffle));
+            
             StatusPanel.SetActive(false);
-
             DealerAnimator = MyAnimator;
             NoneDealerAnimator = OpponentAnimator;
             DealingCard = MyAnimationCard;
@@ -955,5 +961,46 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
     {
         
         SceneManager.LoadScene("Menu");
+    }
+
+    IEnumerator TimerCoroutine(float duration, Action onTimerComplete)
+    {
+        TimerPanel.SetActive(true);
+        
+        float remainingTime = duration;
+
+        while (remainingTime > 0)
+        {
+            // 1. Update Fill Amount (0.0 to 1.0)
+            if (Clock != null)
+            {
+                Clock.fillAmount = remainingTime / duration;
+            }
+
+            // 2. Update Text only during the last 5 seconds
+            if (TimeText != null)
+            {
+                if (remainingTime <= 5f)
+                {
+                    // Ceiling gives us 5, 4, 3, 2, 1
+                    TimeText.text = Mathf.CeilToInt(remainingTime).ToString();
+                }
+                else
+                {
+                    TimeText.text = ""; // Keep empty until the 5s mark
+                }
+            }
+
+            yield return null;
+            remainingTime -= Time.deltaTime;
+        }
+
+        // Cleanup at the end
+        if (Clock != null) Clock.fillAmount = 0;
+        if (TimeText != null) TimeText.text = "0";
+
+        TimerPanel.SetActive(false);
+
+        onTimerComplete?.Invoke();
     }
 }
