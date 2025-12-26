@@ -256,6 +256,11 @@ public class CardManager : MonoBehaviour
 
     public void Shuffle()
     {
+        if(CurrntTimer != null)
+        {
+            StopCoroutine(CurrntTimer);
+        }
+        
         photonView.RPC("ReceiveShuffleRPC", RpcTarget.All);        
     }
 
@@ -282,12 +287,21 @@ public class CardManager : MonoBehaviour
         else
         {
             CutPanel.SetActive(true);
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, Cut));
 
         }
     }
 
     public void Cut()
     {
+        if(CurrntTimer != null)
+        {
+            StopCoroutine(CurrntTimer);
+        }
         photonView.RPC("ReceiveCutRPC", RpcTarget.All);        
     }
 
@@ -315,13 +329,27 @@ public class CardManager : MonoBehaviour
         {
             Selection.SetActive(true);
 
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, AutomaticSetTrumpCard));
+
         }
     }
 
 
+    public void AutomaticSetDealFromTop()
+    {
+        SetDealFromTop(true);
+    }
 
     public void SetDealFromTop(bool fromTop)
     {
+        if(CurrntTimer != null)
+        {
+            StopCoroutine(CurrntTimer);
+        }
         photonView.RPC("ReceiveSetDealFromTopRPC", RpcTarget.All, fromTop);
     }
 
@@ -371,7 +399,14 @@ public class CardManager : MonoBehaviour
         {
             StatusPanel.SetActive(false);
             Selection.SetActive(false); 
-            OrderSelecrtionPanel.SetActive(true);       
+            OrderSelecrtionPanel.SetActive(true); 
+
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, AutomaticSetDealFromTop));
+
             SendTrumpSelectedRPC(cardScript.CardValue); 
 
             
@@ -386,8 +421,30 @@ public class CardManager : MonoBehaviour
     }
 
 
+    void AutomaticSetTrumpCard()
+    {
+
+        int randomIndex = UnityEngine.Random.Range(0, cardValues.Count);
+        string value = "2";
+        value = cardValues[randomIndex];
+
+        SelectTrumpValue(value);      
+
+        if(masterClientTag == "Dealer")
+        {
+            StatusPanel.SetActive(true);
+            statusText.text = "Waiting for Opponent Select Order";
+        }
+    
+    }
+
+
     void SendTrumpSelectedRPC(string value)
     {
+        if(CurrntTimer != null)
+        {
+            StopCoroutine(CurrntTimer);
+        }
         photonView.RPC("ReceiveTrumpSelectedRPC", RpcTarget.All, value);
     }
 
@@ -398,11 +455,14 @@ public class CardManager : MonoBehaviour
         SelectTrumpValue(value);      
 
         if(masterClientTag == "Dealer")
-            {
-                StatusPanel.SetActive(true);
-                statusText.text = "Waiting for Opponent Select Order";
-            }
+        {
+            StatusPanel.SetActive(true);
+            statusText.text = "Waiting for Opponent Select Order";
+        }
     }
+
+
+
     
 
 // --- Updated OnPackCardClicked ---
