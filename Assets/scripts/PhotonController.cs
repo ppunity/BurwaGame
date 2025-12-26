@@ -60,8 +60,11 @@ namespace CardGame{
         public void FindRoom() {
             //MenuController.Instance.vsMsgText.text = "Searching room...";
 
+            string playerRank = PlayportDataHelper.GetPlayerRank();
+
             ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
                 { "roomType", whichRoom },
+                { "rank" , playerRank},
                 { "gameName", "BurwaCardGame" }
             };
 
@@ -70,21 +73,25 @@ namespace CardGame{
 
         public void CreatePracticeRoom(){
             RoomOptions roomOptions = new RoomOptions();
-            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" , "gameName" };
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" , "rank" , "gameName" };
             roomOptions.IsOpen = false;
             roomOptions.IsVisible = false;
             PhotonNetwork.CreateRoom(null, roomOptions);
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message) {
+
+            string playerRank = PlayportDataHelper.GetPlayerRank();
+
             ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
                 { "roomType", whichRoom },
+                { "rank" , playerRank},
                 { "gameName", "BurwaCardGame" }
             };
 
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.CustomRoomProperties = roomHastable;
-            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" , "gameName" };
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" , "rank" , "gameName" };
             roomOptions.IsOpen = true;
             roomOptions.IsVisible = true;
             PhotonNetwork.CreateRoom(null, roomOptions);

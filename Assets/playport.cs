@@ -36,6 +36,12 @@ public class playport : MonoBehaviour
     public TextMeshProUGUI lastLoginAtText;
     public TextMeshProUGUI suspendedByText;
     public TextMeshProUGUI gameIdText;
+    public TextMeshProUGUI ipAdressText;
+    public TextMeshProUGUI winpercentageText;
+    public TextMeshProUGUI RankText;
+
+
+
 
     [Header("UI Image Elements")]
     public Image profileImage;
@@ -135,6 +141,9 @@ public class playport : MonoBehaviour
         public string last_login_at;
         public string suspended_by;
         public string game_id;
+        public string ip_address;
+        public float win_percentage;  
+        public string player_rank;
     }
 
     [System.Serializable]
@@ -209,6 +218,10 @@ public class playport : MonoBehaviour
         SafeSetText(lastLoginAtText, FormatDateTime(userData.last_login_at));
         SafeSetText(suspendedByText, string.IsNullOrEmpty(userData.suspended_by) ? "N/A" : userData.suspended_by);
         SafeSetText(gameIdText, userData.game_id);
+        SafeSetText(ipAdressText, userData.ip_address);
+        SafeSetText(winpercentageText, userData.win_percentage.ToString());
+        SafeSetText(RankText, userData.player_rank);
+        
 
         // Download and set profile image
         if (!string.IsNullOrEmpty(userData.profile_image_url))
@@ -919,6 +932,19 @@ public static class PlayportDataHelper
             if (userData != null)
             {
                 return userData.id ?? fallback;
+            }
+        }
+        return fallback;
+    }
+
+    public static string GetPlayerRank(string fallback = "")
+    {
+        if (playport.Instance != null)
+        {
+            var userData = playport.Instance.GetCurrentUserData();
+            if (userData != null)
+            {
+                return userData.player_rank ?? fallback;
             }
         }
         return fallback;
