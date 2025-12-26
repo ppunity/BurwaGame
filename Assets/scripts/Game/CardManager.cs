@@ -974,7 +974,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
             // 1. Update Fill Amount (0.0 to 1.0)
             if (Clock != null)
             {
-                Clock.fillAmount = (1-remainingTime) / duration;
+                Clock.fillAmount = (duration-remainingTime) / duration;
             }
 
             // 2. Update Text only during the last 5 seconds
