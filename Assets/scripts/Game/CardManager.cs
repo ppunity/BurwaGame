@@ -199,7 +199,7 @@ public class CardManager : MonoBehaviour
             {
                 StopCoroutine(CurrntTimer);
             }
-            CurrntTimer = StartCoroutine(TimerCoroutine(15f, Shuffle));
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, 5f, Shuffle));
             
             StatusPanel.SetActive(false);
             DealerAnimator = MyAnimator;
@@ -291,7 +291,7 @@ public class CardManager : MonoBehaviour
             {
                 StopCoroutine(CurrntTimer);
             }
-            CurrntTimer = StartCoroutine(TimerCoroutine(15f, Cut));
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, 5f, Cut));
 
         }
     }
@@ -333,7 +333,7 @@ public class CardManager : MonoBehaviour
             {
                 StopCoroutine(CurrntTimer);
             }
-            CurrntTimer = StartCoroutine(TimerCoroutine(15f, AutomaticSetTrumpCard));
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, 5f, AutomaticSetTrumpCard));
 
         }
     }
@@ -453,7 +453,7 @@ public class CardManager : MonoBehaviour
             {
                 StopCoroutine(CurrntTimer);
             }
-            CurrntTimer = StartCoroutine(TimerCoroutine(15f, AutomaticSetDealFromTop));
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, 5f, AutomaticSetDealFromTop));
         }
 
     }
@@ -1020,27 +1020,30 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         SceneManager.LoadScene("Menu");
     }
 
-    IEnumerator TimerCoroutine(float duration, Action onTimerComplete)
+    IEnumerator TimerCoroutine(float duration, float countdown, Action onTimerComplete)
     {
-        TimerPanel.SetActive(true);
+        
         
         float remainingTime = duration;
 
         while (remainingTime > 0)
         {
             // 1. Update Fill Amount (0.0 to 1.0)
-            if (Clock != null)
-            {
-                Clock.fillAmount = remainingTime/ duration;
-            }
+            
 
             // 2. Update Text only during the last 5 seconds
             if (TimeText != null)
             {
-                if (remainingTime <= 5f)
+                if (remainingTime <= countdown)
                 {
+                    TimerPanel.SetActive(true);
                     // Ceiling gives us 5, 4, 3, 2, 1
                     TimeText.text = Mathf.CeilToInt(remainingTime).ToString();
+
+                    if (Clock != null)
+                    {
+                        Clock.fillAmount = remainingTime/ countdown;
+                    }
                 }
                 else
                 {
