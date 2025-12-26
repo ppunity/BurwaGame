@@ -397,15 +397,7 @@ public class CardManager : MonoBehaviour
         // Check if the clicked card belongs to the 'Selection' context (based on its parent)
         if (cardScript.transform.parent != null && cardScript.transform.parent.gameObject == Selection)
         {
-            StatusPanel.SetActive(false);
-            Selection.SetActive(false); 
-            OrderSelecrtionPanel.SetActive(true); 
-
-            if(CurrntTimer != null)
-            {
-                StopCoroutine(CurrntTimer);
-            }
-            CurrntTimer = StartCoroutine(TimerCoroutine(15f, AutomaticSetDealFromTop));
+            
 
             SendTrumpSelectedRPC(cardScript.CardValue); 
 
@@ -428,30 +420,23 @@ public class CardManager : MonoBehaviour
         string value = "2";
         value = cardValues[randomIndex];
 
-        SelectTrumpValue(value);      
-
-        if(masterClientTag == "Dealer")
-        {
-            StatusPanel.SetActive(true);
-            statusText.text = "Waiting for Opponent Select Order";
-        }
-    
+        SendTrumpSelectedRPC(value);          
     }
 
 
     void SendTrumpSelectedRPC(string value)
     {
-        if(CurrntTimer != null)
-        {
-            StopCoroutine(CurrntTimer);
-        }
+            
         photonView.RPC("ReceiveTrumpSelectedRPC", RpcTarget.All, value);
     }
 
 
     [PunRPC]
     void ReceiveTrumpSelectedRPC(string value)
-    {    
+    {   
+        StatusPanel.SetActive(false);
+        Selection.SetActive(false);  
+        
         SelectTrumpValue(value);      
 
         if(masterClientTag == "Dealer")
@@ -459,6 +444,18 @@ public class CardManager : MonoBehaviour
             StatusPanel.SetActive(true);
             statusText.text = "Waiting for Opponent Select Order";
         }
+        else
+        {
+
+            OrderSelecrtionPanel.SetActive(true); 
+
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, AutomaticSetDealFromTop));
+        }
+
     }
 
 
