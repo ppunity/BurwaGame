@@ -721,7 +721,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     if(AutoDeal)
         {
-            StartCoroutine(WaitAndAutoDeal());
+            DealPackCard();
 
         }
    
