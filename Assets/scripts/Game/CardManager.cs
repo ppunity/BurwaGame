@@ -84,6 +84,12 @@ public class CardManager : MonoBehaviour
     private Animator DealerAnimator;
     private Animator NoneDealerAnimator;
 
+    [SerializeField] private GameObject MyCutCard;
+    [SerializeField] private GameObject OpponentCutCard;
+
+    [SerializeField] private GameObject[] myshuffle;
+    [SerializeField] private GameObject[] Opponentshuffle;
+
 
     private Coroutine MoveCardCoroutine;
     private Coroutine AutoDealCoroutine;
@@ -284,9 +290,18 @@ public class CardManager : MonoBehaviour
         shufflePanel.SetActive(false);
         StatusPanel.SetActive(false);
         DealerAnimator.SetTrigger("shuffle");
+        GameObject[] dealershufle = masterClientTag=="Dealer"? myshuffle : Opponentshuffle;
+        foreach (GameObject g in dealershufle)
+        {
+            g.SetActive(true);
+        }
         yield return new WaitForSeconds(3f);
         fadePanel.SetActive(true);
-        yield return new WaitForSeconds(1f);                
+        yield return new WaitForSeconds(1f); 
+        foreach (GameObject g in dealershufle)
+        {
+            g.SetActive(false);
+        }               
         DealerAnimator.SetTrigger("shuffleDone");
         if(masterClientTag == "Dealer")
         {
@@ -326,7 +341,16 @@ public class CardManager : MonoBehaviour
         CutPanel.SetActive(false);
         StatusPanel.SetActive(false);
         NoneDealerAnimator.SetTrigger("cut");
+        Animator nonDealercutCard;
+        nonDealercutCard = masterClientTag == "Dealer"? OpponentCutCard.GetComponent<Animator>(): MyCutCard.GetComponent<Animator>() ;
+        nonDealercutCard.SetTrigger("cut");
+        
+        GameObject nonDealercutCardObject = masterClientTag == "Dealer"? OpponentCutCard : MyCutCard;
+        nonDealercutCardObject.SetActive(true);
+
         yield return new WaitForSeconds(3f);
+
+        nonDealercutCardObject.SetActive(false);
         fadePanel.SetActive(true);
         yield return new WaitForSeconds(1f);
 
