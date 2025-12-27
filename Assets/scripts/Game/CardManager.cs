@@ -502,7 +502,7 @@ public void DealButton()
 
 IEnumerator WaitAndAutoDeal()
 {
-    yield return new WaitForSeconds(4f);
+    yield return new WaitForSeconds(1f);
     DealPackCard();
 }
 
@@ -660,7 +660,7 @@ private void ExecuteCardDraw(Card cardScript)
     // 4. Increment the turn ID (happens on ALL clients)
     turnId_++;
 
-    StartCoroutine(WaitAndAutoDeal());
+    
 
     // 5. Update Visuals
     //cardScript.UpdateCardVisual();
@@ -716,7 +716,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     isDealing = false;
    
-    
+    StartCoroutine(WaitAndAutoDeal());
 
 
 }
