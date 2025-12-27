@@ -341,12 +341,16 @@ public class CardManager : MonoBehaviour
         CutPanel.SetActive(false);
         StatusPanel.SetActive(false);
         NoneDealerAnimator.SetTrigger("cut");
+
+        GameObject nonDealercutCardObject = masterClientTag == "Dealer"? OpponentCutCard : MyCutCard;
+        nonDealercutCardObject.SetActive(true);
+
+
         Animator nonDealercutCard;
         nonDealercutCard = masterClientTag == "Dealer"? OpponentCutCard.GetComponent<Animator>(): MyCutCard.GetComponent<Animator>() ;
         nonDealercutCard.SetTrigger("cut");
         
-        GameObject nonDealercutCardObject = masterClientTag == "Dealer"? OpponentCutCard : MyCutCard;
-        nonDealercutCardObject.SetActive(true);
+        
 
         yield return new WaitForSeconds(3f);
 
