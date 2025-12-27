@@ -502,7 +502,7 @@ public void DealButton()
 
 IEnumerator WaitAndAutoDeal()
 {
-    yield return new WaitForSeconds(1f);
+    yield return new WaitForSeconds(2f);
     DealPackCard();
 }
 
@@ -715,6 +715,8 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         }
 
     isDealing = false;
+
+    yield return null;
    
     StartCoroutine(WaitAndAutoDeal());
 
