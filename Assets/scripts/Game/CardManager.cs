@@ -602,7 +602,14 @@ private void ExecuteCardDraw(Card cardScript)
             {
                 DealerAnimator.SetTrigger("right");
             }
-        MoveCardWithDelay(cardScript, DisCards.transform, Card.CardType.Discard, 0.5f);
+            
+
+        if(MoveCardCoroutine != null)
+        {
+            StopCoroutine(MoveCardCoroutine);
+        }
+        MoveCardCoroutine = StartCoroutine(MoveCard(cardScript, DisCards.transform, Card.CardType.Discard, 0.5f));
+
         Debug.Log($"Card {cardScript.name} moved to Discard (Turn {turnId_}).");
     }
     // Logic for Dealing to Hands (turnId_ >= 2)
@@ -655,12 +662,14 @@ private void ExecuteCardDraw(Card cardScript)
                 DealerAnimator.SetBool("Deal", false);
             }
             
-            //Pack.SetActive(false);
-            
-            
         }
 
-        MoveCardWithDelay(cardScript, targetHand.transform, newType, 0.5f);
+
+        if(MoveCardCoroutine != null)
+        {
+            StopCoroutine(MoveCardCoroutine);
+        }
+        MoveCardCoroutine = StartCoroutine(MoveCard(cardScript, targetHand.transform, newType, 0.5f));
 
         // 3. Toggle the turn flag for the next card (happens on ALL clients)
         isPlayerOneTurn = !isPlayerOneTurn;
@@ -677,21 +686,6 @@ private void ExecuteCardDraw(Card cardScript)
     Debug.Log($"State Sync: Turn ID is now {turnId_}. Next turn: {(isPlayerOneTurn ? "Player 1" : "Player 2")}");
 }
 
-
-
-
-
-/// <summary>
-/// Starts the delayed movement process.
-/// </summary>
-public void MoveCardWithDelay(Card card, Transform newParent, Card.CardType newType, float delay)
-{
-    if(MoveCardCoroutine != null)
-    {
-        StopCoroutine(MoveCardCoroutine);
-    }
-    MoveCardCoroutine = StartCoroutine(MoveCard(card, newParent, newType, delay));
-}
 
 private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newType, float delay)
 {
@@ -730,17 +724,16 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         {
             GameOver();
         }
-        else
+
+    if(AutoDeal && masterClientTag == "Dealer")
+    {
+        if(AutoDealCoroutine != null)
         {
-            if(AutoDealCoroutine != null)
-            {
-                StopCoroutine(AutoDealCoroutine);
-            }
-            AutoDealCoroutine = StartCoroutine(WaitAndAutoDeal());
+            StopCoroutine(AutoDealCoroutine);
         }
-
-    
-
+        AutoDealCoroutine = StartCoroutine(WaitAndAutoDeal());
+    }
+        
 }
 
     public void RemoveOtherSelectionCards(Card cardToKeep)
