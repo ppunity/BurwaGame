@@ -269,7 +269,7 @@ public class CardManager : MonoBehaviour
         {
             StopCoroutine(CurrntTimer);
         }
-        
+        TimerPanel.SetActive(false);
         photonView.RPC("ReceiveShuffleRPC", RpcTarget.All);        
     }
 
@@ -311,6 +311,7 @@ public class CardManager : MonoBehaviour
         {
             StopCoroutine(CurrntTimer);
         }
+        TimerPanel.SetActive(false);
         photonView.RPC("ReceiveCutRPC", RpcTarget.All);        
     }
 
@@ -359,6 +360,7 @@ public class CardManager : MonoBehaviour
         {
             StopCoroutine(CurrntTimer);
         }
+        TimerPanel.SetActive(false);
         photonView.RPC("ReceiveSetDealFromTopRPC", RpcTarget.All, fromTop);
     }
 
@@ -506,6 +508,7 @@ public void DealButton()
     {
         StopCoroutine(CurrntTimer);
     }
+    TimerPanel.SetActive(false);
 }
 
 
