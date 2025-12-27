@@ -84,6 +84,10 @@ public class CardManager : MonoBehaviour
     private Animator DealerAnimator;
     private Animator NoneDealerAnimator;
 
+
+    private Coroutine MoveCardCoroutine;
+    private Coroutine AutoDealCoroutine;
+
     private GameObject DealingCard;
 
     int TurnId
@@ -491,7 +495,12 @@ public void OnPackCardClicked(Card cardScript)
 
 public void DealButton()
 {
-    StartCoroutine(WaitAndAutoDeal());
+
+    if(AutoDealCoroutine != null)
+    {
+        StopCoroutine(AutoDealCoroutine);
+    }
+    AutoDealCoroutine = StartCoroutine(WaitAndAutoDeal());
     DealPanel.SetActive(false);
     if(CurrntTimer != null)
     {
@@ -677,10 +686,14 @@ private void ExecuteCardDraw(Card cardScript)
 /// </summary>
 public void MoveCardWithDelay(Card card, Transform newParent, Card.CardType newType, float delay)
 {
-    StartCoroutine(MoveCardCoroutine(card, newParent, newType, delay));
+    if(MoveCardCoroutine != null)
+    {
+        StopCoroutine(MoveCardCoroutine);
+    }
+    MoveCardCoroutine = StartCoroutine(MoveCard(card, newParent, newType, delay));
 }
 
-private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardType newType, float delay)
+private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newType, float delay)
 {
     isDealing = true;
     // Perform the actual movement
@@ -715,9 +728,16 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
     card.gameObject.SetActive(true); // Activate the card after the delay
     if(gameState == GameState.WIN || gameState == GameState.LOSE)
         {
-        GameOver();
+            GameOver();
         }
-
+        else
+        {
+            if(AutoDealCoroutine != null)
+            {
+                StopCoroutine(AutoDealCoroutine);
+            }
+            AutoDealCoroutine = StartCoroutine(WaitAndAutoDeal());
+        }
 
     
 
