@@ -617,7 +617,7 @@ private void ExecuteCardDraw(Card cardScript)
         }
 
         // 1. Move the card to the target hand
-        MoveCardWithDelay(cardScript, targetHand.transform, newType, 0.5f);
+        
         
         Debug.Log($"{cardScript.name} dealt to {(isPlayerOneTurn ? "Player 1" : "Player 2")}'s Hand.");
         gameState = GameState.PLAYING;
@@ -651,7 +651,7 @@ private void ExecuteCardDraw(Card cardScript)
             
         }
 
-        
+        MoveCardWithDelay(cardScript, targetHand.transform, newType, 0.5f);
 
         // 3. Toggle the turn flag for the next card (happens on ALL clients)
         isPlayerOneTurn = !isPlayerOneTurn;
@@ -705,8 +705,12 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
 
     yield return new WaitForSeconds(delay * 0.4f);
     DealingCard.SetActive(false);
+
      // Wait for the specified time
     yield return new WaitForSeconds(delay * 0.3f);
+
+    isDealing = false;
+
 
     card.gameObject.SetActive(true); // Activate the card after the delay
     if(gameState == GameState.WIN || gameState == GameState.LOSE)
@@ -714,17 +718,7 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         GameOver();
         }
 
-    
 
-    yield return new WaitForSeconds(0.5f);
-    isDealing = false;
-
-    if(AutoDeal)
-        {
-            DealPackCard();
-
-        }
-   
     
 
 }

@@ -14903,7 +14903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3895dfd18b0c12b4e87e1b4376143369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoDeal: 1
+  AutoDeal: 0
   RoomName: 
   masterClientTag: 
   gameState: 0
