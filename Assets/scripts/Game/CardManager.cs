@@ -63,6 +63,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject shufflePanel;   
     [SerializeField] private GameObject CutPanel;
     [SerializeField] private GameObject StatusPanel;
+    [SerializeField] private GameObject DealPanel;
     [SerializeField] TextMeshProUGUI statusText;
     [SerializeField] TextMeshProUGUI PriceText;
     [SerializeField] private GameObject OrderSelecrtionPanel;
@@ -104,6 +105,8 @@ public class CardManager : MonoBehaviour
             Value = value;
         }
     }
+
+    private int cardIndex;
 
     private void Awake()
     {
@@ -182,6 +185,8 @@ public class CardManager : MonoBehaviour
 
     public void SetGame(string myTag)
     {
+        cardIndex = 0;
+
         Vector3 pos1 = Hand_P1.transform.parent.position;
         Vector3 pos2 = Hand_P2.transform.parent.position;
 
@@ -484,6 +489,56 @@ public void OnPackCardClicked(Card cardScript)
     }
 }
 
+public void DealButton()
+{
+    StartCoroutine(WaitAndAutoDeal());
+}
+
+
+IEnumerator WaitAndAutoDeal()
+{
+    yield return new WaitForSeconds(5f);
+    DealPackCard();
+}
+
+
+public void DealPackCard()
+{
+
+    if (gameOver || !trumpSelected || isDealing)
+    {
+        Debug.Log("Game is over or trump not selected. No more cards can be dealt.");
+        return;
+    }
+
+    if (cardIndex >= 0 && cardIndex < Pack.transform.childCount)
+    {
+
+        int targetIndex = dealFromTop? cardIndex : Pack.transform.childCount -1 - cardIndex;
+        // 2. Get the child at the specific index
+        Transform childTransform = Pack.transform.GetChild(targetIndex);
+
+        // 3. Try to get the Card component and assign it to your variable
+        Card cardTemp = childTransform.GetComponent<Card>();
+
+        if (PhotonNetwork.InRoom)
+        {
+            // Send the card's unique name to all clients (including the local client via RpcTarget.All)
+            photonView.RPC("SynchronizeCardDrawRPC", RpcTarget.All, cardTemp.name);
+        }
+
+        
+    }
+    else
+    {
+        Debug.LogError("Card index is out of range.");
+    }
+
+
+    cardIndex ++;
+    
+}
+
 
 
 // --- New RPC Method for Dealing Cards ---
@@ -599,6 +654,8 @@ private void ExecuteCardDraw(Card cardScript)
     
     // 4. Increment the turn ID (happens on ALL clients)
     turnId_++;
+
+    StartCoroutine(WaitAndAutoDeal());
 
     // 5. Update Visuals
     //cardScript.UpdateCardVisual();
@@ -911,6 +968,11 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         if(!dealFromTop)
         {
             FlipPack();
+        }
+
+        if(AutoDeal)
+        {
+            DealPanel.SetActive(true);
         }
     }
 
