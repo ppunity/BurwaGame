@@ -492,12 +492,17 @@ public void OnPackCardClicked(Card cardScript)
 public void DealButton()
 {
     StartCoroutine(WaitAndAutoDeal());
+    DealPanel.SetActive(false);
+    if(CurrntTimer != null)
+    {
+        StopCoroutine(CurrntTimer);
+    }
 }
 
 
 IEnumerator WaitAndAutoDeal()
 {
-    yield return new WaitForSeconds(5f);
+    yield return new WaitForSeconds(3f);
     DealPackCard();
 }
 
@@ -970,9 +975,15 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
             FlipPack();
         }
 
-        if(AutoDeal)
+        if(AutoDeal && masterClientTag == "Dealer")
         {
             DealPanel.SetActive(true);
+
+            if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(15f, 5f, DealButton));
         }
     }
 
