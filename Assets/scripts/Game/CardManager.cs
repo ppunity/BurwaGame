@@ -502,7 +502,7 @@ public void DealButton()
 
 IEnumerator WaitAndAutoDeal()
 {
-    yield return new WaitForSeconds(2f);
+    yield return new WaitForSeconds(3f);
     DealPackCard();
 }
 
@@ -510,7 +510,7 @@ IEnumerator WaitAndAutoDeal()
 public void DealPackCard()
 {
 
-    if (gameOver || !trumpSelected || isDealing)
+    if (gameOver || !trumpSelected )
     {
         Debug.Log("Game is over or trump not selected. No more cards can be dealt.");
         return;
@@ -714,12 +714,18 @@ private IEnumerator MoveCardCoroutine(Card card, Transform newParent, Card.CardT
         GameOver();
         }
 
+    
+
+    yield return new WaitForSeconds(0.5f);
     isDealing = false;
 
-    yield return null;
-   
-    StartCoroutine(WaitAndAutoDeal());
+    if(AutoDeal)
+        {
+            StartCoroutine(WaitAndAutoDeal());
 
+        }
+   
+    
 
 }
 
