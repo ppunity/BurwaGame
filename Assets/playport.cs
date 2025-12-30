@@ -852,6 +852,70 @@ public IEnumerator PostBetTransactionCoroutine(int betAmount, string result, str
 }
 
 
+public void PostGameStats(string roomName)
+{
+    StartCoroutine(PostGameStatsCoroutine(roomName));
+}
+
+
+public IEnumerator PostGameStatsCoroutine(string roomName)
+{
+    string token = GetTokenFromURL();
+    
+    // Validate required data
+    if (string.IsNullOrEmpty(token))
+    {
+        Debug.LogError("[PostGameStats] AUTH_TOKEN is empty! Cannot post game stats.");
+        yield break;
+    }
+
+    if (string.IsNullOrEmpty(GAME_ID))
+    {
+        Debug.LogError("[PostGameStats] GAME_ID is empty! Cannot post game stats.");
+        yield break;
+    }
+
+    // Build JSON manually since GameStatsRequest with room_name doesn't exist in your serializable classes
+    string json = $"{{\"game_id\":\"{GAME_ID}\",\"room_name\":\"{roomName.ToUpper()}\"}}";
+    Debug.Log("[PostGameStats] Sending: " + json);
+
+    using (var request = new UnityWebRequest("https://api.playport.lk/api/v1/games-stats", "POST"))
+    {
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        request.SetRequestHeader("Authorization", "Bearer " + token);
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        // Check for 401 Unauthorized
+        if (CheckForUnauthorized(request))
+        {
+            yield break;
+        }
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError($"[PostGameStats] Error: {request.error} (HTTP {request.responseCode})");
+            Debug.LogError($"[PostGameStats] Response: {request.downloadHandler.text}");
+            yield break;
+        }
+
+        string jsonResponse = request.downloadHandler.text;
+        Debug.Log("[PostGameStats] Success! Response: " + jsonResponse);
+
+        GameStatsResponse response = JsonUtility.FromJson<GameStatsResponse>(jsonResponse);
+        if (response != null && response.success)
+        {
+            Debug.Log("[PostGameStats] Game stats posted successfully: " + response.message);
+        }
+    }
+}
+
+
 
 
     #endregion

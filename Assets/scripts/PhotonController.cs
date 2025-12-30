@@ -60,7 +60,8 @@ namespace CardGame{
         public void FindRoom() {
             //MenuController.Instance.vsMsgText.text = "Searching room...";
 
-            string playerRank = PlayportDataHelper.GetPlayerRank();
+            //string playerRank = PlayportDataHelper.GetPlayerRank();
+            string playerRank = "None";
 
             ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
                 { "roomType", whichRoom },
@@ -81,7 +82,8 @@ namespace CardGame{
 
         public override void OnJoinRandomFailed(short returnCode, string message) {
 
-            string playerRank = PlayportDataHelper.GetPlayerRank();
+            //string playerRank = PlayportDataHelper.GetPlayerRank();
+            string playerRank = "None";
 
             ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
                 { "roomType", whichRoom },

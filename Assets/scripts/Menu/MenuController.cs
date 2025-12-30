@@ -75,6 +75,11 @@ public class MenuController : MonoBehaviour
             vsPanel.gameObject.SetActive(true);
             OpponentStatus = 0;
             SetUserData();
+
+            if(playport.Instance != null)
+            {
+                playport.Instance.PostGameStats(room);
+            }
             
         }
 

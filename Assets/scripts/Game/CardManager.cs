@@ -118,6 +118,11 @@ public class CardManager : MonoBehaviour
 
     private int cardIndex;
 
+
+    private int roomPrice;
+
+    public string MyRoundID;
+
     private void Awake()
     {
         // 1. Enforce Singleton: Ensure only one instance exists.
@@ -171,24 +176,35 @@ public class CardManager : MonoBehaviour
         RoomName = PhotonController.Instance.whichRoom;
 
         if(RoomName == "galle")
-        {
-            PriceText.text = "200";
+        {            
+            roomPrice = 200;
         }
         else if(RoomName == "kandy")
         {
-            PriceText.text = "400";
+            
+            roomPrice = 400;
         }
         else if(RoomName == "colombo")
         {
-            PriceText.text = "1000";
+            
+            roomPrice = 1000;
         }
         else if(RoomName == "jaffna")
         {
-            PriceText.text = "2000";
+            
+            roomPrice = 2000;
         }
         else if(RoomName == "sigiri")
         {
-            PriceText.text = "10000";
+            
+            roomPrice = 10000;
+        }
+
+        PriceText.text = roomPrice.ToString();
+
+        if(playport.Instance != null)
+        {
+            StartCoroutine(WaitAndPostBet());
         }
         
     }
@@ -268,6 +284,32 @@ public class CardManager : MonoBehaviour
         ClearDiscards();
         
     }
+
+
+
+    private IEnumerator WaitAndPostBet()
+    {
+        // Wait a frame to ensure API Manager is fully initialized
+        yield return null;
+        int mainPlayerPrize = roomPrice/2;
+        int amount = mainPlayerPrize;
+        // Check if GAME_ID is available
+        if (string.IsNullOrEmpty(playport.Instance.GAME_ID))
+        {
+            Debug.LogError("GAME_ID still empty, trying to initialize from URL");
+            yield return null; // Wait one more frame
+        }
+
+        string p1 = PhotonNetwork.PlayerList[0].NickName;
+        string p2 = PhotonNetwork.PlayerList[1].NickName;
+        string RoundId = p1 + " + " + p2 + " : BurwaCardGame";
+        MyRoundID = RoundId;
+        
+        // Now post the bet transaction
+        playport.Instance.PostBetTransaction(amount, "debit", RoundId);
+    }
+
+
 
     public void Shuffle()
     {
@@ -1119,6 +1161,8 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         if (gameState == GameState.WIN)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Win!";
+            PlayportDataHelper.RecordWin();
+            StartCoroutine(WaitAndWinCredit());
 
             if(CurrntTimer != null)
             {
@@ -1131,6 +1175,7 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         else if (gameState == GameState.LOSE)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+            PlayportDataHelper.RecordLoss();
 
             if(CurrntTimer != null)
             {
@@ -1138,6 +1183,54 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
             }
             CurrntTimer = StartCoroutine(TimerCoroutine(8f, 5f, showLoss));
         }
+    }
+
+    private IEnumerator WaitAndWinCredit()
+    {
+        if (playport.Instance == null)
+        {
+            Debug.LogError("playport Instance is null!");
+            yield break;
+        }
+        yield return null;
+        int winAmount = roomPrice;
+        
+        if (string.IsNullOrEmpty(playport.Instance.GAME_ID))
+        {
+            Debug.LogError("GAME_ID still empty, trying to initialize from URL");
+            yield return null;
+        }
+
+        string RoundId = MyRoundID;
+        playport.Instance.PostBetTransaction(winAmount, "credit", RoundId, OnBetTransactionComplete);
+    }
+
+    private void OnBetTransactionComplete(bool success, string message)
+    {
+        if (success)
+        {
+            Debug.Log($"Bet transaction successful: {message}");
+            OnTransactionSuccess();
+        }
+        else
+        {
+            Debug.LogError($"Bet transaction failed: {message}");
+            OnTransactionFailure(message);
+        }
+    }
+
+    private void OnTransactionSuccess()
+    {
+        Debug.Log("Transaction completed successfully!");
+        //AfterGameOver(true);
+    }
+
+    private void OnTransactionFailure(string errorMessage)
+    {
+        Debug.LogError($"Transaction failed: {errorMessage}");
+        
+        // Call MenuBtn instead of GoHome directly to ensure proper cleanup
+        //MenuBtn();
     }
 
     public void showWin()
