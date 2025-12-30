@@ -90,6 +90,10 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject[] myshuffle;
     [SerializeField] private GameObject[] Opponentshuffle;
 
+    [SerializeField] private TextMeshProUGUI vsAwayUsernameText;
+    [SerializeField] private Image OpponentprofileImage;
+    [SerializeField] private Sprite opponentprofilesprite;
+
 
     private Coroutine MoveCardCoroutine;
     private Coroutine AutoDealCoroutine;
@@ -1296,5 +1300,92 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         TimerPanel.SetActive(false);
 
         onTimerComplete?.Invoke();
+    }
+
+        private void UpdateVsNames()
+    {
+
+        // Away (opponent)
+        var others = PhotonNetwork.PlayerListOthers;
+        if (others != null && others.Length > 0)
+        {
+            string awayName = others[0].NickName;
+            if (vsAwayUsernameText) vsAwayUsernameText.text = awayName;
+            else vsAwayUsernameText.text = "";
+
+            // ✅ Load opponent image
+            if (others[0].CustomProperties.ContainsKey("profile_image_url"))
+            {
+                string imageUrl = others[0].CustomProperties["profile_image_url"].ToString();
+                Debug.Log($"[MainMenu] Opponent profile image URL: {imageUrl}");
+                PlayerPrefs.SetString("opponentimage", imageUrl);
+                StartCoroutine(LoadOpponentImage(imageUrl));
+            }
+            else
+            {
+                Debug.LogWarning("[MainMenu] Opponent has no profile image property set.");
+            }
+        }
+    }
+
+        private void Handle401Unauthorized()
+    {
+        Debug.LogWarning("[APIManager] 401 Unauthorized - Redirecting to login page");
+        
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            Application.ExternalEval("window.location.replace('https://playport.lk');");
+        #else
+            Application.OpenURL("https://playport.lk");
+        #endif
+    }
+
+    // Helper method to check response code
+    private bool CheckForUnauthorized(UnityWebRequest request)
+    {
+        if (request.responseCode == 401)
+        {
+            Handle401Unauthorized();
+            return true;
+        }
+        return false;
+    }
+
+    public IEnumerator LoadOpponentImage(string imageUrl)
+    {
+        if (string.IsNullOrEmpty(imageUrl))
+        {
+            Debug.LogWarning("[OpponentImage] URL is empty.");
+            OpponentprofileImage.sprite = opponentprofilesprite;
+            //PlayerImg.sprite = sampleProfile;
+            yield break;
+        }
+
+        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl))
+        {
+            yield return request.SendWebRequest();
+            if (CheckForUnauthorized(request))
+            {
+                yield break;
+            }
+            if (request.result == UnityWebRequest.Result.ConnectionError ||
+                request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError($"[OpponentImage] Error loading opponent image: {request.error}");
+                OpponentprofileImage.sprite = opponentprofilesprite;
+                //PlayerImg.sprite = sampleProfile;
+                yield break;
+            }
+
+            Texture2D texture = DownloadHandlerTexture.GetContent(request);
+            Sprite sprite = Sprite.Create(texture,
+                new Rect(0, 0, texture.width, texture.height),
+                new Vector2(0.5f, 0.5f));
+
+            if (OpponentprofileImage)
+            {
+                OpponentprofileImage.sprite = sprite;
+                Debug.Log("[OpponentImage] Opponent image loaded successfully.");
+            }
+        }
     }
 }
