@@ -206,6 +206,8 @@ public class CardManager : MonoBehaviour
 
         PriceText.text = roomPrice.ToString();
 
+        UpdateVsNames();
+
         if(playport.Instance != null)
         {
             StartCoroutine(WaitAndPostBet());
@@ -602,10 +604,7 @@ public void DealPackCard()
         return;
     }
 
-    if (cardIndex >= 0 && cardIndex < Pack.transform.childCount)
-    {
-
-        int targetIndex = dealFromTop? cardIndex : Pack.transform.childCount -1 - cardIndex;
+    int targetIndex = dealFromTop? cardIndex : Pack.transform.childCount -1 - cardIndex;
         // 2. Get the child at the specific index
         Transform childTransform = Pack.transform.GetChild(targetIndex);
 
@@ -617,13 +616,6 @@ public void DealPackCard()
             // Send the card's unique name to all clients (including the local client via RpcTarget.All)
             photonView.RPC("SynchronizeCardDrawRPC", RpcTarget.All, cardTemp.name);
         }
-
-        
-    }
-    else
-    {
-        Debug.LogError("Card index is out of range.");
-    }
 
 
     cardIndex ++;
@@ -1302,7 +1294,7 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         onTimerComplete?.Invoke();
     }
 
-        private void UpdateVsNames()
+    private void UpdateVsNames()
     {
 
         // Away (opponent)
