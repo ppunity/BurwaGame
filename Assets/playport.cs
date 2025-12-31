@@ -596,7 +596,7 @@ public string GetTokenFromURL()
 
 #if UNITY_EDITOR
     // MOCK URL FOR TESTING: Replace with a real valid GameID + Token string from your staging/dev environment
-    url = "https://pool.playport.lk/?gameid=70b70bb1-362e-45fa-95f0-ac0d39f2c9f5eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMWY1MWYzOS03MDdhLTQxYzktYWUxZi05NzQ5ZmJjYjE4ZTEiLCJyb2xlIjoidXNlciIsInNlc3Npb25JZCI6IjJiMmQxMjdhNzc1NzE0NDExOWQ3YWI1MTZkZjVkNzFkIiwiaWF0IjoxNzY2NzUzMjIxfQ.AZ494vBoJRFYbjnG2y6hb5RwyVmSPRNtFDkWd-o5Pqo";
+    url = "https://pool.playport.lk/?gameid=70b70bb1-362e-45fa-95f0-ac0d39f2c9f5eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMWY1MWYzOS03MDdhLTQxYzktYWUxZi05NzQ5ZmJjYjE4ZTEiLCJyb2xlIjoidXNlciIsInNlc3Npb25JZCI6IjEwZjViOGYxMGMyZTdjZjViZjg4NzQ4YjBkNjIxZDgwIiwiaWF0IjoxNzY3MTgwNTIxfQ.UHSwVLqKwS5ef8MT3sjakjqe4aBw6J-mcibGISKId6g";
     Debug.Log("[EDITOR] Using Mock URL: " + url);
 #else
     url = Application.absoluteURL;

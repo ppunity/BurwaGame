@@ -1,17 +1,7 @@
 fileFormatVersion: 2
-guid: 2900adb4286905245a6ac62f700831b6
-AssetOrigin:
-  serializedVersion: 1
-  productId: 282386
-  packageName: Carrom - Multiplayer
-  packageVersion: 1.2
-  assetPath: Assets/Carrom/Images/Sprites/back icon.png
-  uploadId: 738807
+guid: 74348349f0f6e9f49978acd488b7d20d
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -5781471587620459729
-    second: back icon_0
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +39,7 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -91,19 +81,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 1024
-    resizeAlgorithm: 0
-    textureFormat: 51
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 1
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -129,27 +106,40 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: back icon_0
+      name: Colombo_background_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 251
-        height: 252
+        width: 1080
+        height: 1920
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f2b6edcf83614cfa0800000000000000
-      internalID: -5781471587620459729
+      spriteID: b7ebde8365d18184a8e3439878f0388f
+      internalID: 856409684
       vertices: []
       indices: 
       edges: []
@@ -158,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: e6cb956219c19674ab9818056dd05a74
     internalID: 0
     vertices: []
     indices: 
@@ -168,7 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      back icon_0: -5781471587620459729
+      Colombo_background_0: 856409684
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
