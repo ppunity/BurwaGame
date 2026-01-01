@@ -29,6 +29,14 @@ public class MenuController : MonoBehaviour
 
     [SerializeField] private RectTransform vsPanel;
 
+    [SerializeField] private RectTransform MessagePanel;
+
+    [SerializeField] private TextMeshProUGUI MessageText;
+
+    [SerializeField] private Button MessageCloseButton;
+
+    [SerializeField] private GameObject lanButton;
+
     private bool isConnecting = false;
     private float connectionTimeout = 15f;
 
@@ -50,6 +58,8 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI vsAwayUsernameText;
     [SerializeField] private Image OpponentprofileImage;    
     [SerializeField] private Sprite opponentprofilesprite;
+
+    [SerializeField] private GameObject languagePanel;
 
 
         void Awake()
@@ -192,6 +202,9 @@ public class MenuController : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             loadingPanel.gameObject.SetActive(false);
             Header.gameObject.SetActive(true);
+
+            CheckLanguageSetting();
+            
         }
         else
         {
@@ -199,10 +212,10 @@ public class MenuController : MonoBehaviour
                 // Keep loading panel visible
                 Debug.LogWarning($"Loading timeout - Network: {networkConnected}, Profile: {profileFetched}");
             
-                //MessagePanel.gameObject.SetActive(true);
-                //MessageText.text = "Loading timeout... ";
-                //MessageCloseButton.onClick.RemoveAllListeners();
-                //MessageCloseButton.onClick.AddListener(() => { MessagePanel.gameObject.SetActive(false); });
+                MessagePanel.gameObject.SetActive(true);
+                MessageText.text = "Loading timeout... ";
+                MessageCloseButton.onClick.RemoveAllListeners();
+                MessageCloseButton.onClick.AddListener(() => { MessagePanel.gameObject.SetActive(false); });
                 
         }
 
@@ -349,6 +362,55 @@ public class MenuController : MonoBehaviour
                 OpponentprofileImage.sprite = sprite;
                 Debug.Log("[OpponentImage] Opponent image loaded successfully.");
             }
+        }
+    }
+
+    public void CheckLanguageSetting()
+    {
+        // Check if the key "lanbp" exists in PlayerPrefs
+        if (!PlayerPrefs.HasKey("lanbp"))
+        {
+            
+            lanButton.SetActive(false);
+            // If it doesn't exist, activate the panel
+            if (languagePanel != null)
+            {
+                languagePanel.SetActive(true);
+            }
+            else
+            {
+                
+                
+                Debug.LogWarning("LanguagePanel is not assigned in the Inspector.");
+            }
+        }
+        else
+        {
+            // Optional: Key exists, so make sure panel is hidden
+            if (languagePanel != null)
+            {
+                languagePanel.SetActive(false);
+            }
+
+            
+            lanButton.SetActive(true);
+        }
+    }
+
+    public void SetLan(int i)
+    {
+        // Save the integer value to the "lanbp" key
+        PlayerPrefs.SetInt("lanbp", i);
+        
+        // Forces the data to be written to disk immediately
+        PlayerPrefs.Save();
+
+        Debug.Log("Language saved as: " + i);
+
+        // Automatically hide the panel once the choice is made
+        if (languagePanel != null)
+        {
+            languagePanel.SetActive(false);
         }
     }
 
