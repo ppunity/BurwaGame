@@ -1142,7 +1142,7 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         }else if (PhotonNetwork.PlayerList.Length == 1)
         {
             gameState = GameState.WIN;
-            GameOver();
+            showWin();
         }
     }
 
