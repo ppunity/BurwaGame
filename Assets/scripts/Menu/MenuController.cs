@@ -53,6 +53,8 @@ public class MenuController : MonoBehaviour
     public AudioClip profileSearchSound;
     public AudioSource sfxSource;
 
+    IEnumerator noOpponentFound;
+
 
     [SerializeField] private TextMeshProUGUI vsTotalBetText;
     [SerializeField] private TextMeshProUGUI vsAwayUsernameText;
@@ -91,6 +93,8 @@ public class MenuController : MonoBehaviour
                 playport.Instance.PostGameStats(room);
             }
             
+            noOpponentFound = NoOpponentCountdown();
+            StartCoroutine(noOpponentFound);
         }
 
         public void OnPlayerJoinnedRoom()
@@ -119,6 +123,10 @@ public class MenuController : MonoBehaviour
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
             {
+                 if (noOpponentFound != null)
+                {
+                    StopCoroutine(noOpponentFound);
+                }
                 StartCoroutine(SetOpponent());
             }
         }
@@ -127,6 +135,23 @@ public class MenuController : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             SetOS();
+        }
+
+        IEnumerator NoOpponentCountdown()
+        {
+            yield return new WaitForSeconds(30f);
+            if(PhotonNetwork.PlayerList.Length ==1 )
+            {
+            StopRollingSound();
+            Debug.Log("No opponent found");
+            PhotonNetwork.LeaveRoom();
+            vsPanel.gameObject.SetActive(false);
+
+            MessagePanel.gameObject.SetActive(true);
+            MessageText.text = "Rooms is Full; Please Try Again Later";
+            MessageCloseButton.onClick.RemoveAllListeners();
+            MessageCloseButton.onClick.AddListener(() => { MessagePanel.gameObject.SetActive(false); });
+            }
         }
 
 
