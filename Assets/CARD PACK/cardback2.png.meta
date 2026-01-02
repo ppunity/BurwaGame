@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fb6bfcb4bb1ad5e43b13f4a2bee0d40a
+guid: ca040f8eff8206d459ce8b0b446fb52b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Kandy_background_0
+      name: cardback2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1080
-        height: 1920
+        width: 256
+        height: 360
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,8 +138,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e5d51af1a54c884c943f2573a3f5810
-      internalID: -1703105565
+      spriteID: 29dbf7e4fcd8c5f4daa45df34e1663b0
+      internalID: -97246920
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8f8f7da704bed774a921b1aa010034e0
+    spriteID: d41822f5f29128e468734607ace6ebc3
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Kandy_background_0: -1703105565
+      cardback2_0: -97246920
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

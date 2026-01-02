@@ -283,7 +283,7 @@ MonoBehaviour:
   cardValue: None
   cardtype: 0
   cardTextMesh: {fileID: 4374921201421420175}
-  cardbackSprite: {fileID: -2036553038, guid: 7314497541237ba4e93b8db126ada56c, type: 3}
+  cardbackSprite: {fileID: -97246920, guid: ca040f8eff8206d459ce8b0b446fb52b, type: 3}
   cardfrontSprite: {fileID: -2842052407051664608, guid: ba24a94c70a89bb48a036aaffc97e971, type: 3}
   TrumpCardSprite: {fileID: -898118955, guid: 7d3214815d20cab42bf07a6f2a265ad3, type: 3}
 --- !u!65 &7074250907458852385

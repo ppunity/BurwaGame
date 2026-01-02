@@ -7642,7 +7642,7 @@ Camera:
   far clip plane: 1000
   field of view: 58
   orthographic: 1
-  orthographic size: 5.85
+  orthographic size: 3.75
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -23400,7 +23400,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 485657067, guid: bf9c6330c7eba1c4c9db5d028fdea6bd, type: 3}
+  m_Sprite: {fileID: -1659530035, guid: 74d4b2d011e541f44a00d98cc2a3a75c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
