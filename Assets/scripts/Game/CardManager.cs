@@ -607,6 +607,7 @@ public void DealPackCard()
     int targetIndex = dealFromTop? cardIndex : Pack.transform.childCount -1 - cardIndex;
         // 2. Get the child at the specific index
         Transform childTransform = Pack.transform.GetChild(targetIndex);
+        Debug.Log("ci:" + cardIndex + " ti" + targetIndex + " cc" + Pack.transform.childCount);
 
         // 3. Try to get the Card component and assign it to your variable
         Card cardTemp = childTransform.GetComponent<Card>();
