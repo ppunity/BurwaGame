@@ -612,7 +612,7 @@ public void DealPackCard()
         }
     else
         {
-            targetIndex = Pack.transform.childCount -1 - cardIndex;
+            targetIndex = 51 - cardIndex;
         }
 
     Transform childTransform = Pack.transform.GetChild(targetIndex);
