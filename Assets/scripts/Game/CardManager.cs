@@ -604,19 +604,28 @@ public void DealPackCard()
         return;
     }
 
-    int targetIndex = dealFromTop? cardIndex : Pack.transform.childCount -1 - cardIndex;
-        // 2. Get the child at the specific index
-        Transform childTransform = Pack.transform.GetChild(targetIndex);
-        Debug.Log("ci:" + cardIndex + " ti" + targetIndex + " cc" + Pack.transform.childCount);
-
-        // 3. Try to get the Card component and assign it to your variable
-        Card cardTemp = childTransform.GetComponent<Card>();
-
-        if (PhotonNetwork.InRoom)
+    int targetIndex ;
+    
+    if(dealFromTop)
         {
-            // Send the card's unique name to all clients (including the local client via RpcTarget.All)
-            photonView.RPC("SynchronizeCardDrawRPC", RpcTarget.All, cardTemp.name);
+            targetIndex = cardIndex;
         }
+    else
+        {
+            targetIndex = Pack.transform.childCount -1 - cardIndex;
+        }
+
+    Transform childTransform = Pack.transform.GetChild(targetIndex);
+    Debug.Log("ci:" + cardIndex + " ti" + targetIndex + " cc" + Pack.transform.childCount);
+
+    // 3. Try to get the Card component and assign it to your variable
+    Card cardTemp = childTransform.GetComponent<Card>();
+
+    if (PhotonNetwork.InRoom)
+    {
+        // Send the card's unique name to all clients (including the local client via RpcTarget.All)
+        photonView.RPC("SynchronizeCardDrawRPC", RpcTarget.All, cardTemp.name);
+    }
 
 
     cardIndex ++;
