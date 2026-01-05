@@ -608,11 +608,11 @@ public void DealPackCard()
     
     if(dealFromTop)
         {
-            targetIndex = cardIndex;
+            targetIndex = 0;
         }
     else
         {
-            targetIndex = 51 - cardIndex;
+            targetIndex = Pack.transform.childCount - 1;
         }
 
     Transform childTransform = Pack.transform.GetChild(targetIndex);
