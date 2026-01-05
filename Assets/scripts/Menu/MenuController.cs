@@ -81,6 +81,39 @@ public class MenuController : MonoBehaviour
 
         public void RoomsBtn(string room)
         {
+            int mainPlayerPrize = 0;
+
+            if(room == "galle")
+            {
+                mainPlayerPrize = 100;
+            }
+            else if(room == "kandy")
+            {
+                mainPlayerPrize = 200;
+            }
+            else if(room == "colombo")
+            {
+                mainPlayerPrize = 500;
+            }
+            else if(room == "jaffna")
+            {
+                mainPlayerPrize = 1000;
+            }
+            else if(room == "sigiri")
+            {
+                mainPlayerPrize = 5000;
+            }
+
+            if(mainPlayerPrize > PlayportDataHelper.GetCoins(0) )
+            {
+                MessagePanel.gameObject.SetActive(true);
+                MessageText.text = "Insufficent Balance!";
+                MessageCloseButton.onClick.RemoveAllListeners();
+                MessageCloseButton.onClick.AddListener(() => { MessagePanel.gameObject.SetActive(false); });
+                return;
+            
+            }
+            
             // Load the main game scene
             PhotonController.Instance.whichRoom = room;
             PhotonController.Instance.FindRoom();
