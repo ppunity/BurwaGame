@@ -34,8 +34,8 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI MessageText;
 
     [SerializeField] private Button MessageCloseButton;
-
-    [SerializeField] private GameObject lanButton;
+    [SerializeField] private GameObject lanButton; 
+    [SerializeField] private GameObject whiteScreen; 
 
     private bool isConnecting = false;
     private float connectionTimeout = 15f;
@@ -54,6 +54,7 @@ public class MenuController : MonoBehaviour
     public AudioSource sfxSource;
 
     IEnumerator noOpponentFound;
+    private int RandomNumber;
 
 
     [SerializeField] private TextMeshProUGUI vsTotalBetText;
@@ -75,12 +76,16 @@ public class MenuController : MonoBehaviour
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            whiteScreen.SetActive(false);
             loadingPanel.gameObject.SetActive(true);
             ShowLoadingScreenWithProgress();
         }
 
         public void RoomsBtn(string room)
         {
+            Debug.Log("Buruwa Count:" + PlayerPrefs.GetInt("BuruwaCount"));
+            Debug.Log("Win Percentage:" + PlayportDataHelper.GetUserData().win_percentage);
+
             int mainPlayerPrize = 0;
 
             if(room == "galle")
@@ -113,12 +118,22 @@ public class MenuController : MonoBehaviour
                 return;
             
             }
-            
+
+            Debug.Log("Before Condition");
+            if(PlayerPrefs.HasKey("BuruwaCount") && PlayerPrefs.GetInt("BuruwaCount") % 2 == 1 && PlayportDataHelper.GetUserData().win_percentage > 5.0f)
+            {
+
+                Debug.Log("Whitescreen Active");
+                whiteScreen.SetActive(true);
+                return;
+            }
+
             // Load the main game scene
             PhotonController.Instance.whichRoom = room;
             PhotonController.Instance.FindRoom();
             vsPanel.gameObject.SetActive(true);
             OpponentStatus = 0;
+            RandomNumber = Random.Range(0, 1000);
             SetUserData();
 
             if(playport.Instance != null)
@@ -156,10 +171,10 @@ public class MenuController : MonoBehaviour
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
             {
-                 if (noOpponentFound != null)
-                {
-                    StopCoroutine(noOpponentFound);
-                }
+                if (noOpponentFound != null)
+                    {
+                        StopCoroutine(noOpponentFound);
+                    }
                 StartCoroutine(SetOpponent());
             }
         }
@@ -331,7 +346,8 @@ public class MenuController : MonoBehaviour
         PhotonNetwork.NickName = PlayportDataHelper.GetUsername();
         string purl = PlayportDataHelper.GetProfileUrl();
         ExitGames.Client.Photon.Hashtable playerData = new ExitGames.Client.Photon.Hashtable();
-        playerData["profile_image_url"] = purl;   // store your own URL
+        playerData["profile_image_url"] = purl;  
+        playerData["rand"] = RandomNumber.ToString();  // store your own URL
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerData);
     }
 

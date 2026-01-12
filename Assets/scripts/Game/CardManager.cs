@@ -94,11 +94,25 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Image OpponentprofileImage;
     [SerializeField] private Sprite opponentprofilesprite;
 
+    [SerializeField] private AudioClip winSound;
+    [SerializeField] private AudioClip loseSound;
+    [SerializeField] private AudioSource sfxSource;
+
+    [SerializeField] private AudioClip clockSound;
+    [SerializeField] private AudioClip shuffleSound;
+    [SerializeField] private AudioClip cutSound;
+    [SerializeField] private AudioClip DealSound;
+    
+
+
+
 
     private Coroutine MoveCardCoroutine;
     private Coroutine AutoDealCoroutine;
 
     private GameObject DealingCard;
+
+    private bool DealOn = false;
 
     int TurnId
     {
@@ -208,10 +222,21 @@ public class CardManager : MonoBehaviour
 
         UpdateVsNames();
 
-        if(playport.Instance != null)
-        {
-            StartCoroutine(WaitAndPostBet());
-        }
+        
+
+        DealOn = false;
+
+        string rand_ = "";
+
+        if (PhotonNetwork.PlayerList[0].CustomProperties.ContainsKey("rand"))
+            {
+                rand_ = PhotonNetwork.PlayerList[0].CustomProperties["rand"].ToString();
+            }
+
+        string p1 = PhotonNetwork.PlayerList[0].NickName;
+        string p2 = PhotonNetwork.PlayerList[1].NickName;
+        string RoundId = p1 + "+" + p2 + ":BurwaCardGame" + rand_;
+        MyRoundID = RoundId;
         
     }
 
@@ -242,8 +267,6 @@ public class CardManager : MonoBehaviour
             DealerAnimator = MyAnimator;
             NoneDealerAnimator = OpponentAnimator;
             DealingCard = MyAnimationCard;
-            
-            
         }
         else
         {
@@ -306,13 +329,30 @@ public class CardManager : MonoBehaviour
             yield return null; // Wait one more frame
         }
 
-        string p1 = PhotonNetwork.PlayerList[0].NickName;
-        string p2 = PhotonNetwork.PlayerList[1].NickName;
-        string RoundId = p1 + " + " + p2 + " : BurwaCardGame";
-        MyRoundID = RoundId;
+        int tempBuruwaCount;
+
+        // Get the player's Buruwa Match Count from PlayerPrefs - Thinula
+        if (PlayerPrefs.HasKey("BuruwaCount"))
+        {
+            tempBuruwaCount = PlayerPrefs.GetInt("BuruwaCount");
+            tempBuruwaCount += 1;
+            PlayerPrefs.SetInt("BuruwaCount", tempBuruwaCount);
+            Debug.Log("Count Updated" + PlayerPrefs.GetInt("BuruwaCount"));
+        }
+        else
+        {
+            tempBuruwaCount = 1;
+            PlayerPrefs.SetInt("BuruwaCount", tempBuruwaCount);
+            PlayerPrefs.Save(); // optional but recommended
+            Debug.Log("Count Set" + PlayerPrefs.GetInt("BuruwaCount"));
+        }
+
         
         // Now post the bet transaction
-        playport.Instance.PostBetTransaction(amount, "debit", RoundId);
+        playport.Instance.PostBetTransaction(amount, "debit", MyRoundID);
+
+
+        DealOn = true;
     }
 
 
@@ -337,6 +377,7 @@ public class CardManager : MonoBehaviour
     {
         shufflePanel.SetActive(false);
         StatusPanel.SetActive(false);
+        StartClip(shuffleSound);
         DealerAnimator.SetTrigger("shuffle");
         GameObject[] dealershufle = masterClientTag=="Dealer"? myshuffle : Opponentshuffle;
         foreach (GameObject g in dealershufle)
@@ -349,7 +390,8 @@ public class CardManager : MonoBehaviour
         foreach (GameObject g in dealershufle)
         {
             g.SetActive(false);
-        }               
+        }
+        StopSpecificClip(shuffleSound);               
         DealerAnimator.SetTrigger("shuffleDone");
         if(masterClientTag == "Dealer")
         {
@@ -543,6 +585,13 @@ public class CardManager : MonoBehaviour
             CurrntTimer = StartCoroutine(TimerCoroutine(15f, 5f, AutomaticSetDealFromTop));
         }
 
+        if(playport.Instance != null)
+        {
+            StartCoroutine(WaitAndPostBet());
+        }
+
+        
+
     }
 
 
@@ -669,6 +718,9 @@ public void SynchronizeCardDrawRPC(string cardName)
 /// <param name="cardScript">The Card instance to be processed.</param>
 private void ExecuteCardDraw(Card cardScript)
 {
+
+    PlayClip(DealSound);
+
     // Logic for Discarding the first two cards (turnId_ = 0 and 1)
     if (turnId_ < 2)
     {
@@ -1151,10 +1203,17 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
             
         }else if (PhotonNetwork.PlayerList.Length == 1)
         {
-            gameState = GameState.WIN;
-            PlayportDataHelper.RecordWin();
-            StartCoroutine(WaitAndWinCredit());
-            showWin();
+            if(DealOn)
+            {
+                gameState = GameState.WIN;
+                PlayportDataHelper.RecordWin();
+                StartCoroutine(WaitAndWinCredit());
+                showWin();
+            }
+            else
+            {
+                GoHome();
+            }
         }
     }
 
@@ -1169,14 +1228,12 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         if (gameState == GameState.WIN)
         {
             winText.GetComponent<TextMeshProUGUI>().text = "You Win!";
+            
+            
             PlayportDataHelper.RecordWin();
-            StartCoroutine(WaitAndWinCredit());
 
-            if(CurrntTimer != null)
-            {
-                StopCoroutine(CurrntTimer);
-            }
-            CurrntTimer = StartCoroutine(TimerCoroutine(8f, 5f, showWin));
+            StartCoroutine(WaitAndWinCredit());
+            
            
             
         }
@@ -1195,6 +1252,9 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
 
     private IEnumerator WaitAndWinCredit()
     {
+        yield return new WaitForSeconds(0.5f);
+
+        // Wait a frame to ensure API Manager is fully initialized
         if (playport.Instance == null)
         {
             Debug.LogError("playport Instance is null!");
@@ -1231,6 +1291,11 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
     {
         Debug.Log("Transaction completed successfully!");
         //AfterGameOver(true);
+        if(CurrntTimer != null)
+            {
+                StopCoroutine(CurrntTimer);
+            }
+            CurrntTimer = StartCoroutine(TimerCoroutine(8f, 5f, showWin));
     }
 
     private void OnTransactionFailure(string errorMessage)
@@ -1239,15 +1304,19 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         
         // Call MenuBtn instead of GoHome directly to ensure proper cleanup
         //MenuBtn();
+
+        GoHome();
     }
 
     public void showWin()
     {
+        PlayWinSound();
         WinVid.SetActive(true);
     }
 
     public void showLoss()
     {
+        PlayLoseSound();
         LossVid.SetActive(true);
     }
 
@@ -1258,7 +1327,7 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
 
     public void GoHome()
     {
-        
+        PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene("Menu");
     }
 
@@ -1278,7 +1347,13 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
             {
                 if (remainingTime <= countdown)
                 {
+                    if(TimerPanel.activeSelf == false)
+                    {
                     TimerPanel.SetActive(true);
+                    StartClip(clockSound);
+                    }
+
+                    
                     // Ceiling gives us 5, 4, 3, 2, 1
                     TimeText.text = Mathf.CeilToInt(remainingTime).ToString();
 
@@ -1302,6 +1377,7 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         if (TimeText != null) TimeText.text = "0";
 
         TimerPanel.SetActive(false);
+        StopSpecificClip(clockSound);
 
         onTimerComplete?.Invoke();
     }
@@ -1391,5 +1467,53 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
                 Debug.Log("[OpponentImage] Opponent image loaded successfully.");
             }
         }
+    }
+
+    public void PlayWinSound()
+    {
+        if (winSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(winSound);
+        }
+    }
+    
+    public void PlayLoseSound()
+    {
+        if (loseSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(loseSound);
+        }
+    }
+
+
+    public void StartClip(AudioClip clipToPlay)
+    {
+        if (clipToPlay == null) return;
+
+        sfxSource.clip = clipToPlay;
+        sfxSource.Play();
+    }
+
+    // Stops the clip, but only if it's the one currently playing
+    public void StopSpecificClip(AudioClip clipToStop)
+    {
+        if (sfxSource.clip == clipToStop)
+        {
+            sfxSource.Stop();
+        }
+    }
+
+    public void ButtonSound(AudioClip clipToPlay)
+    {
+        if (clipToPlay == null) return;
+
+        sfxSource.PlayOneShot(clipToPlay);
+    }
+
+    public void PlayClip(AudioClip clipToPlay)
+    {
+        if (clipToPlay == null) return;
+
+        sfxSource.PlayOneShot(clipToPlay);
     }
 }
