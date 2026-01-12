@@ -10,6 +10,7 @@ namespace CardGame{
     public class PhotonController : MonoBehaviourPunCallbacks {
         public static PhotonController Instance;
         public string whichRoom;
+        public bool evenGame = false;
         public int roomEntryPice = 0;
 
 
@@ -73,7 +74,16 @@ namespace CardGame{
         }
 
         public void CreatePracticeRoom(){
+            string playerRank = "None";
+
+            ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
+                { "roomType", whichRoom },
+                { "rank" , playerRank},
+                { "gameName", "BurwaCardGame"}
+            };
+
             RoomOptions roomOptions = new RoomOptions();
+            roomOptions.CustomRoomProperties = roomHastable;
             roomOptions.CustomRoomPropertiesForLobby = new string[] { "roomType" , "rank" , "gameName" };
             roomOptions.IsOpen = false;
             roomOptions.IsVisible = false;
@@ -88,7 +98,7 @@ namespace CardGame{
             ExitGames.Client.Photon.Hashtable roomHastable = new ExitGames.Client.Photon.Hashtable {
                 { "roomType", whichRoom },
                 { "rank" , playerRank},
-                { "gameName", "BurwaCardGame" }
+                { "gameName", "BurwaCardGame"}
             };
 
             RoomOptions roomOptions = new RoomOptions();
@@ -124,10 +134,6 @@ namespace CardGame{
             if (SceneManager.GetActiveScene().name == "Menu") {
                 //MenuController.Instance.VsOnLeftRoom();
             }
-        }
-
-        public override void OnCreatedRoom() {
-            
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer) {

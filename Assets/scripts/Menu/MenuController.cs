@@ -119,30 +119,42 @@ public class MenuController : MonoBehaviour
             
             }
 
-            Debug.Log("Before Condition");
+
             if(PlayerPrefs.HasKey("BuruwaCount") && PlayerPrefs.GetInt("BuruwaCount") % 2 == 1 && PlayportDataHelper.GetUserData().win_percentage > 5.0f)
             {
+                PhotonController.Instance.whichRoom = room;
+                PhotonController.Instance.evenGame = true;
+                PhotonController.Instance.CreatePracticeRoom();
+                vsPanel.gameObject.SetActive(true);
+                OpponentStatus = 0;
+                RandomNumber = Random.Range(0, 1000);
+                SetUserData();
 
-                Debug.Log("Whitescreen Active");
-                whiteScreen.SetActive(true);
-                return;
+                if(playport.Instance != null)
+                {
+                    playport.Instance.PostGameStats(room);
+                }
+
             }
-
-            // Load the main game scene
-            PhotonController.Instance.whichRoom = room;
-            PhotonController.Instance.FindRoom();
-            vsPanel.gameObject.SetActive(true);
-            OpponentStatus = 0;
-            RandomNumber = Random.Range(0, 1000);
-            SetUserData();
-
-            if(playport.Instance != null)
+            else
             {
-                playport.Instance.PostGameStats(room);
+                PhotonController.Instance.whichRoom = room;
+                PhotonController.Instance.FindRoom();
+                vsPanel.gameObject.SetActive(true);
+                OpponentStatus = 0;
+                RandomNumber = Random.Range(0, 1000);
+                SetUserData();
+
+                if(playport.Instance != null)
+                {
+                    playport.Instance.PostGameStats(room);
+                }
+                
+                noOpponentFound = NoOpponentCountdown();
+                StartCoroutine(noOpponentFound);
             }
+
             
-            noOpponentFound = NoOpponentCountdown();
-            StartCoroutine(noOpponentFound);
         }
 
         public void OnPlayerJoinnedRoom()
@@ -159,7 +171,7 @@ public class MenuController : MonoBehaviour
 
             StartCoroutine(startGameCoroutine());
 
-        }    
+        }
 
         IEnumerator startGameCoroutine()
         {
@@ -175,6 +187,9 @@ public class MenuController : MonoBehaviour
                     {
                         StopCoroutine(noOpponentFound);
                     }
+                StartCoroutine(SetOpponent());
+            }else if (PhotonController.Instance.evenGame)
+            {
                 StartCoroutine(SetOpponent());
             }
         }
@@ -377,6 +392,12 @@ public class MenuController : MonoBehaviour
             }
         }
     }
+
+    private void UpdateDemoOpponentDetails()
+    {
+        vsAwayUsernameText.text = "Demo Player";
+    }
+
 
         private void Handle401Unauthorized()
     {
@@ -595,7 +616,14 @@ public class MenuController : MonoBehaviour
     public void SetOS()
     {
         OpponentStatus = 1;
-        UpdateVsNames();
+        if (PhotonController.Instance.evenGame)
+        {
+            UpdateDemoOpponentDetails();
+        }
+        else
+        {
+            UpdateVsNames();
+        }
     }
 
     public void PlayCoinCollectSound()
