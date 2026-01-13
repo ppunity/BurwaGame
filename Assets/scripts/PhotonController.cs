@@ -11,6 +11,8 @@ namespace CardGame{
         public static PhotonController Instance;
         public string whichRoom;
         public bool evenGame = false;
+        public string demoPlayerName = "DemoPlayer";
+        public Sprite demoImage = null;
         public int roomEntryPice = 0;
 
 

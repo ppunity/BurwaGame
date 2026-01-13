@@ -1865,6 +1865,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whichRoom: 
+  evenGame: 0
+  demoPlayerName: DemoPlayer
   roomEntryPice: 0
 --- !u!4 &453279760
 Transform:
@@ -5218,6 +5220,22 @@ MonoBehaviour:
   OpponentprofileImage: {fileID: 587461309346053634}
   opponentprofilesprite: {fileID: -2663946839352863904, guid: 054a56e4899690547ae276725871a4ae, type: 3}
   languagePanel: {fileID: 1995433396}
+  demoImages:
+  - {fileID: 21300000, guid: 5d1c74048c11e2e4abb49514ca8212ed, type: 3}
+  - {fileID: 21300000, guid: 585c460f0f94d594fbd8316944fd50ce, type: 3}
+  - {fileID: 21300000, guid: 883b7e326fc5c6948a509dbf13da322a, type: 3}
+  - {fileID: 21300000, guid: 1de78b4bf1f26334e8c0a5d617be4315, type: 3}
+  - {fileID: 21300000, guid: 964b0aed02cde6a48811b6e3891aef8c, type: 3}
+  - {fileID: 21300000, guid: aa89bde1bba381a4189d45dd88812ddb, type: 3}
+  - {fileID: 21300000, guid: 38415e1ef57ffad4fb64a5be31b0fe4b, type: 3}
+  - {fileID: 21300000, guid: 348038c9b9acf11418b80cc30a6359a0, type: 3}
+  - {fileID: 21300000, guid: 68cbb72f9e9a2ab48b66f42f5307678c, type: 3}
+  - {fileID: 21300000, guid: 1b90e900ecb6b2649b356c459bcf2cc5, type: 3}
+  - {fileID: 21300000, guid: 811545b42851aab46ae797392576b797, type: 3}
+  - {fileID: 21300000, guid: 8143de14ed798c14792416c950e4e708, type: 3}
+  - {fileID: 21300000, guid: 5486d48f0c4b5bd47b443359f23c6508, type: 3}
+  - {fileID: 21300000, guid: 9d4123e26ea050344bdf1c87de112f49, type: 3}
+  - {fileID: 21300000, guid: 6ade58af94794fd4dab28a4e835b43f8, type: 3}
 --- !u!82 &1882449697
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9198,9 +9216,9 @@ RectTransform:
   - {fileID: 8274714944349889099}
   m_Father: {fileID: 6210801698659296336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1800, y: -930.5}
   m_SizeDelta: {x: 869.2, y: 1115.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1950548470019452726
@@ -9896,9 +9914,9 @@ RectTransform:
   - {fileID: 6965331277964323276}
   m_Father: {fileID: 6210801698659296336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2392, y: -930.5}
   m_SizeDelta: {x: 869.2, y: 1115.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &2245425422058359554
@@ -15849,9 +15867,9 @@ RectTransform:
   - {fileID: 6993853444640607184}
   m_Father: {fileID: 6210801698659296336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 616, y: -930.5}
   m_SizeDelta: {x: 869.2, y: 1115.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &6272286408593836625
@@ -16038,9 +16056,9 @@ RectTransform:
   - {fileID: 2445037329358821175}
   m_Father: {fileID: 6210801698659296336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2984, y: -930.5}
   m_SizeDelta: {x: 869.2, y: 1115.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6302255350651518590
@@ -17620,9 +17638,9 @@ RectTransform:
   - {fileID: 8243324112930806397}
   m_Father: {fileID: 6210801698659296336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1208, y: -930.5}
   m_SizeDelta: {x: 869.2, y: 1115.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7430325878164906462

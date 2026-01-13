@@ -64,6 +64,12 @@ public class MenuController : MonoBehaviour
 
     [SerializeField] private GameObject languagePanel;
 
+    private string[] demoPlayerNames = new string[]
+    {
+        "Ashan","Dineth","Kavinda","Nimesh","Sandun","Tharindum","Chamath","Dilshan","Randika","Sachith","Udara","Yasiru","Nipun","Ravindu","Dhananjaya"
+    };
+    public Sprite[] demoImages;
+
 
         void Awake()
             {
@@ -119,7 +125,7 @@ public class MenuController : MonoBehaviour
             
             }
 
-
+//if(PlayerPrefs.HasKey("BuruwaCount") && PlayerPrefs.GetInt("BuruwaCount") % 2 == 1 && PlayportDataHelper.GetUserData().win_percentage > 5.0f)
             if(PlayerPrefs.HasKey("BuruwaCount") && PlayerPrefs.GetInt("BuruwaCount") % 2 == 1 && PlayportDataHelper.GetUserData().win_percentage > 5.0f)
             {
                 PhotonController.Instance.whichRoom = room;
@@ -139,6 +145,7 @@ public class MenuController : MonoBehaviour
             else
             {
                 PhotonController.Instance.whichRoom = room;
+                PhotonController.Instance.evenGame = false;
                 PhotonController.Instance.FindRoom();
                 vsPanel.gameObject.SetActive(true);
                 OpponentStatus = 0;
@@ -163,8 +170,6 @@ public class MenuController : MonoBehaviour
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.CurrentRoom.IsVisible = false;
-
-                
             }
 
             SetOS();
@@ -190,8 +195,16 @@ public class MenuController : MonoBehaviour
                 StartCoroutine(SetOpponent());
             }else if (PhotonController.Instance.evenGame)
             {
-                StartCoroutine(SetOpponent());
+                StartCoroutine(evenGameCoroutine());
             }
+        }
+
+        public IEnumerator evenGameCoroutine()
+        {
+            yield return new WaitForSeconds(Random.Range(2f,4f));
+            SetOS();
+            yield return new WaitForSeconds(4f);
+            SceneManager.LoadScene("Game");
         }
 
         IEnumerator SetOpponent()
@@ -369,6 +382,9 @@ public class MenuController : MonoBehaviour
 
     private void UpdateVsNames()
     {
+        // Removing Demo Player Details from PhotonController
+        PhotonController.Instance.demoPlayerName = "";
+        PhotonController.Instance.demoImage = null;
 
         // Away (opponent)
         var others = PhotonNetwork.PlayerListOthers;
@@ -395,7 +411,16 @@ public class MenuController : MonoBehaviour
 
     private void UpdateDemoOpponentDetails()
     {
-        vsAwayUsernameText.text = "Demo Player";
+        int randomIndex = Random.Range(0, demoPlayerNames.Length);
+
+        string demoName = demoPlayerNames[randomIndex];
+        Sprite demoImage = demoImages[randomIndex];
+
+        PhotonController.Instance.demoPlayerName = demoName;
+        PhotonController.Instance.demoImage = demoImage;
+
+        vsAwayUsernameText.text = demoName;
+        OpponentprofileImage.sprite = demoImage;
     }
 
 

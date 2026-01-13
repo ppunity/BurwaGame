@@ -220,7 +220,15 @@ public class CardManager : MonoBehaviour
 
         PriceText.text = roomPrice.ToString();
 
-        UpdateVsNames();
+
+        if(PhotonController.Instance.evenGame)
+        {
+            UpdateDemoPlayerDetails();
+        }
+        else
+        {
+            UpdateVsNames();
+        }
 
         
 
@@ -234,8 +242,8 @@ public class CardManager : MonoBehaviour
             }
 
         string p1 = PhotonNetwork.PlayerList[0].NickName;
-        string p2 = PhotonNetwork.PlayerList[1].NickName;
-        string RoundId = p1 + "+" + p2 + ":BurwaCardGame" + rand_;
+        string p2 = PhotonController.Instance.evenGame ? PhotonController.Instance.demoPlayerName : PhotonNetwork.PlayerList[1].NickName;
+        string RoundId = PhotonController.Instance.evenGame ? p1 + "+" + p2 + ":BurwaCardGame" + rand_ + "(DEMO)" : p1 + "+" + p2 + ":BurwaCardGame" + rand_;
         MyRoundID = RoundId;
         
     }
@@ -283,8 +291,11 @@ public class CardManager : MonoBehaviour
             DealerAnimator = OpponentAnimator;
             NoneDealerAnimator = MyAnimator;
             DealingCard = OpponentAnimationCard;
-            
 
+            if (PhotonController.Instance.evenGame)
+            {
+                Invoke("Shuffle", Random.Range(2f, 4f));
+            }
             
         }
 
@@ -331,21 +342,21 @@ public class CardManager : MonoBehaviour
 
         int tempBuruwaCount;
 
-        // Get the player's Buruwa Match Count from PlayerPrefs - Thinula
-        if (PlayerPrefs.HasKey("BuruwaCount"))
-        {
-            tempBuruwaCount = PlayerPrefs.GetInt("BuruwaCount");
-            tempBuruwaCount += 1;
-            PlayerPrefs.SetInt("BuruwaCount", tempBuruwaCount);
-            Debug.Log("Count Updated" + PlayerPrefs.GetInt("BuruwaCount"));
-        }
-        else
-        {
-            tempBuruwaCount = 1;
-            PlayerPrefs.SetInt("BuruwaCount", tempBuruwaCount);
-            PlayerPrefs.Save(); // optional but recommended
-            Debug.Log("Count Set" + PlayerPrefs.GetInt("BuruwaCount"));
-        }
+    // Get the player's Buruwa Match Count from PlayerPrefs - Thinula
+    if (PlayerPrefs.HasKey("BuruwaCount"))
+    {
+        tempBuruwaCount = PlayerPrefs.GetInt("BuruwaCount");
+        tempBuruwaCount += 1;
+        PlayerPrefs.SetInt("BuruwaCount", tempBuruwaCount);
+        Debug.Log("Count Updated" + PlayerPrefs.GetInt("BuruwaCount"));
+    }
+    else
+    {
+        tempBuruwaCount = 1;
+        PlayerPrefs.SetInt("BuruwaCount", tempBuruwaCount);
+        PlayerPrefs.Save(); 
+        Debug.Log("Count Set" + PlayerPrefs.GetInt("BuruwaCount"));
+    }
 
         
         // Now post the bet transaction
@@ -507,6 +518,9 @@ public class CardManager : MonoBehaviour
         if(masterClientTag == "Dealer")
         {
             CreateFullPack();
+        }else if(PhotonController.Instance.evenGame)
+        {
+            CreateFullPack();
         }
     }
 
@@ -622,7 +636,6 @@ public void OnPackCardClicked(Card cardScript)
 
 public void DealButton()
 {
-
     if(AutoDealCoroutine != null)
     {
         StopCoroutine(AutoDealCoroutine);
@@ -863,7 +876,14 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
             StopCoroutine(AutoDealCoroutine);
         }
         AutoDealCoroutine = StartCoroutine(WaitAndAutoDeal());
-    }
+    }else if (PhotonController.Instance.evenGame)
+        {
+            if(AutoDealCoroutine != null)
+            {
+                StopCoroutine(AutoDealCoroutine);
+            }
+            AutoDealCoroutine = StartCoroutine(WaitAndAutoDeal());
+        }
         
 }
 
@@ -1032,6 +1052,10 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
         
         // 3. Shuffle the list using the helper function
         List<CardData> shuffledDeck = ShuffleList(unshuffledDeck);
+        foreach (var card in shuffledDeck)
+        {
+            Debug.Log("Val= "+card.Value);
+        }
         
         // --- SERIALIZATION FOR RPC ---
         // Convert the list of structs into separate arrays of strings for the RPC
@@ -1131,30 +1155,52 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
             }
             CurrntTimer = StartCoroutine(TimerCoroutine(15f, 5f, DealButton));
         }
-    }
-
-
-    /// <summary>
-    /// Implements the Fisher-Yates shuffle algorithm on a generic list.
-    /// </summary>
-    private List<T> ShuffleList<T>(List<T> list)
-    {
-        // Create a copy to avoid modifying the original list if it were passed by reference
-        List<T> shuffledList = list.ToList();
-        
-        // The standard Fisher-Yates loop runs from the end of the list to the start.
-        for (int i = shuffledList.Count - 1; i > 0; i--)
+        if (PhotonController.Instance.evenGame)
         {
-            // Pick a random element between 0 and i (inclusive)
-            int randomIndex = Random.Range(0, i + 1);
-
-            // Swap the element at i with the randomly chosen element
-            T temp = shuffledList[i];
-            shuffledList[i] = shuffledList[randomIndex];
-            shuffledList[randomIndex] = temp;
+            Invoke("DealButton", 2f);
         }
-        return shuffledList;
     }
+
+    private List<CardData> ShuffleList(List<CardData> list)
+    {
+        List<CardData> shuffled = list.ToList();
+
+        for (int i = shuffled.Count - 1; i > 0; i--)
+        {
+            int r = Random.Range(0, i + 1);
+            (shuffled[i], shuffled[r]) = (shuffled[r], shuffled[i]);
+        }
+
+        if (!PhotonController.Instance.evenGame)
+            return shuffled;
+
+        for (int i = 1; i < shuffled.Count; i += 2) 
+        {
+            if (shuffled[i].Value == currentTrumpValue)
+            {
+                List<int> availableEvenPositions = new List<int>();
+                for (int j = 0; j < shuffled.Count; j += 2)
+                {
+                    if (shuffled[j].Value != currentTrumpValue)
+                    {
+                        availableEvenPositions.Add(j);
+                    }
+                }
+
+                if (availableEvenPositions.Count > 0)
+                {
+                    int randomIndex = Random.Range(0, availableEvenPositions.Count);
+                    int swapPosition = availableEvenPositions[randomIndex];
+                    (shuffled[i], shuffled[swapPosition]) = (shuffled[swapPosition], shuffled[i]);
+                }
+            }
+        }
+
+        return shuffled;
+    }
+
+
+
 
 
     public void FlipPack()
@@ -1407,6 +1453,13 @@ private IEnumerator MoveCard(Card card, Transform newParent, Card.CardType newTy
             }
         }
     }
+
+    private void UpdateDemoPlayerDetails()
+    {
+        vsAwayUsernameText.text = PhotonController.Instance.demoPlayerName;
+        OpponentprofileImage.sprite = PhotonController.Instance.demoImage;
+    }
+
 
         private void Handle401Unauthorized()
     {
